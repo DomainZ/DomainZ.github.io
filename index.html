@@ -325,27 +325,21 @@
       
         
           
-            <ol>
-<li>安装一个好的 Markdown（以下简称 MD）文本编辑器，请参考@林青山 的答案;</li>
-<li>一开始，先记住 <code># 这是标题</code>、<code>## 这是二级标题</code>、<code>### 这是三级标题</code>这时候你写一般小文章会开始感觉 MD 不错。</li>
-<li>然后，你发现标题不适合做列表，记住了用<code>1. 第一点</code>、<code>- 这一点</code>来列表超级方便。</li>
-<li>好吧，写知乎答案总要有些重点吧，<code>**加粗**</code>、<code>*斜体*</code>、<code>~~删除线~~</code>开始派上用场了。这时你基本不会打开 Word 那样的笨重软件了。</li>
-<li>如果你不幸是码农:</li>
+            <p>一般写文字先开始一个描述，就是说说这篇文章是将什么的？然后开始几个大标题，大标题里面几个小标题。文章前情说完了。</p>
+<h2 id="这里要写一个大标题"><a href="#这里要写一个大标题" class="headerlink" title="这里要写一个大标题"></a>这里要写一个大标题</h2><h3 id="大标题下面要分几条"><a href="#大标题下面要分几条" class="headerlink" title="大标题下面要分几条"></a>大标题下面要分几条</h3><ol>
+<li>如果要写1234的列表;</li>
+<li>如果说明的文字里面有链接<a href="https://baidu.com" target="_blank" rel="noopener">Server</a></li>
+<li>如果要突出文字，<strong>加粗</strong>、<em>斜体</em>，开始派上用场了;</li>
+<li>如果引用了一波；<blockquote>
+<p>这是引用</p>
+</blockquote>
+</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">if (!_shareBoardView) &#123;</span><br><span class="line">        _shareBoardView = [[[NSBundle mainBundle] loadNibNamed:@&quot;QBDLShareBoardView&quot; owner:self options:nil] lastObject];</span><br><span class="line">        _shareBoardView.frame = self.shareBoardInvisibleRect;</span><br><span class="line">        _shareBoardView.share_type = self.shareModel.share_type;</span><br><span class="line">        QBDLShareInfoView __weak *weakSelf = self;</span><br><span class="line">        _shareBoardView.didSelectForShareHandler = ^(NSInteger shareType)&#123;</span><br><span class="line">            [weakSelf handlerShareActionWithShareType:shareType];</span><br><span class="line">            [weakSelf dismiss];</span><br><span class="line">        &#125;;</span><br><span class="line">        _shareBoardView.cancelButtonHandler = ^()&#123;</span><br><span class="line">            [weakSelf dismiss];</span><br><span class="line">        &#125;;</span><br><span class="line">        [_shareBoardView updateConstraints];</span><br><span class="line">    &#125;</span><br><span class="line">    return _shareBoardView;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>这是引用</p>
-<blockquote>
-<p>这是引用</p>
-<blockquote>
-<p>这是引用</p>
-</blockquote>
-</blockquote>
-</blockquote>
-<ol>
-<li>你越来越喜欢，自然会去查查维基（Markdown）还有什么语法，加上多用，很快就基本掌握了。MD 还有表格、锚、注脚、贴图等。强烈推荐 Mou，按 ⌘＋R 可以快速查看语法。</li>
-<li>慢慢，你会发现，总有小「bugs」，如列表内无法内嵌代码段。上网查查，你开始理解 MD 的缩进内嵌机制等高级隐形内容，这样你就 Master 了！</li>
+<h3 id="大标题下面的第二条"><a href="#大标题下面的第二条" class="headerlink" title="大标题下面的第二条"></a>大标题下面的第二条</h3><ol>
+<li>如果不幸是码农:</li>
 </ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UIView *shareBoardView = [[[NSBundle mainBundle] loadNibNamed:@&quot;QBDLShareBoardView&quot; owner:self options:nil] lastObject];</span><br></pre></td></tr></table></figure>
+<h3 id="大标题下面的第三条"><a href="#大标题下面的第三条" class="headerlink" title="大标题下面的第三条"></a>大标题下面的第三条</h3><p>如果要放一张图片<br><img src="要想写博客，先要学会MarkDown/avatar.jpg" alt="alt text" title="avatar"></p>
 <hr>
 
           
