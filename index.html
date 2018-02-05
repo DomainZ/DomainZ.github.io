@@ -348,7 +348,7 @@
 </li>
 <li><p>基于Runloop source，source0类型需要通过CFRunLoopSourceSignal(source)，将这个 Source 标记为待处理，然后手动调用 CFRunLoopWakeUp(runloop) 来唤醒 RunLoop，让其处理这个事件，source1维护一个mach_port和函数指针，会主动唤醒Runloop执行函数。</p>
 </li>
-<li><p>屏幕触摸事件响应到app内部是基于source1；<br>NSURLConnection，start的时候，会启动两个线程，其中一个线程负责回调各种网络事件，然后通过手动source0发信号，通知上层的代理方法；一般的网络库为了后代线程接受事件，往往schedule一个添加了空Source0或者machport的runloop，为什么会添加一个空的Source0主要是为了该runloop不会停掉；</p>
+<li><p>屏幕触摸事件响应到app内部是基于source1；<br>NSURLConnection，start的时候，会启动两个线程，其中一个线程负责回调各种网络事件，然后通过手动source0发信号，通知上层的代理方法；一般的网络库为了后代线程接受事件，往往schedule一个添加了空Source0(machport)的runloop，为什么会添加一个空的Source0主要是为了该runloop不会停掉；</p>
 </li>
 </ul>
 
