@@ -111,7 +111,7 @@
 <meta property="og:site_name" content="Jim zhang&#39;s Blog">
 <meta property="og:description" content="Block用起来很方便，编译过程到底是怎么回事呢？ Block的数据结构12345678910111213struct Block_descriptor_1 &amp;#123;    uintptr_t reserved;    uintptr_t size;&amp;#125;; struct Block_layout &amp;#123;    void *isa;    volatile int32_t flag">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-02-05T09:29:17.058Z">
+<meta property="og:updated_time" content="2019-08-30T03:43:31.378Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS之Block">
 <meta name="twitter:description" content="Block用起来很方便，编译过程到底是怎么回事呢？ Block的数据结构12345678910111213struct Block_descriptor_1 &amp;#123;    uintptr_t reserved;    uintptr_t size;&amp;#125;; struct Block_layout &amp;#123;    void *isa;    volatile int32_t flag">
@@ -327,16 +327,25 @@
       
         <p>Block用起来很方便，编译过程到底是怎么回事呢？</p>
 <h3 id="Block的数据结构"><a href="#Block的数据结构" class="headerlink" title="Block的数据结构"></a>Block的数据结构</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">struct Block_descriptor_1 &#123;</span><br><span class="line">    uintptr_t reserved;</span><br><span class="line">    uintptr_t size;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">struct Block_layout &#123;</span><br><span class="line">    void *isa;</span><br><span class="line">    volatile int32_t flags; // contains ref count</span><br><span class="line">    int32_t reserved; </span><br><span class="line">    void (*invoke)(void *, ...);</span><br><span class="line">    struct Block_descriptor_1 *descriptor;</span><br><span class="line">    // imported variables</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>Block编译之后成为一个结构体（实际上就是对象类型因为第一位是*isa），一个函数指针，指向的是编译过程中根据block中代码生成的Imp，最后面的是block中代码持有的变量；</p>
-<h3 id="Block-Tips"><a href="#Block-Tips" class="headerlink" title="Block Tips"></a>Block Tips</h3><ul>
-<li><p>正常一个对象的创建是在堆上开辟内存空间，block创建是在栈区，赋值过程中会被拷贝到堆区；</p>
+<p>Block编译之后成为一个结构体（实际上就是对象类型因为第一位是*isa），一个函数指针，指向的是编译过程中根据block中代码生成的Imp，最后面的是block中代码持有的变量(相当于对象的成员变量)；</p>
+<h3 id="Block之变量"><a href="#Block之变量" class="headerlink" title="Block之变量"></a>Block之变量</h3><ul>
+<li><p>block里面对内外部变量会将其对象化成成员变量不添加<em>__block</em>修饰只能是只读，用<em>__weak</em>修饰外部截取的变量retain count不会+1否则+1强持有；</p>
 </li>
-<li><p>__block定义的变量实际上是将其对象化，然后拷贝到堆区，然后在block里面强引用，从而可以实现对外部变量的操作；</p>
+<li><p>能用<em>__block</em>来指定block中想变更值的截获的变量，在block从栈拷贝到堆的时候，截获的变量都会拷贝到堆上，<em>__block</em>修饰的变量为了能够实现栈和堆都可以正常读写到，栈区的该变量的<em>__forwardingk</em>指针会指向到已经拷贝到堆的变量，读写改变了通过<em>__forwarding</em>指针取值；</p>
+</li>
+<li><p>除了<em>__weak</em>也能用<em>__block</em>解决循环引用，只需要在block语句最会赋值为空；</p>
 </li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//这个实际上是一个对象了，之后如果对i的操作都是对其堆区的数据操作</span><br><span class="line">__block int i = -1;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>Block里面对象强引用，里面记得用weak；</li>
+<h3 id="栈上的Block栈堆转移"><a href="#栈上的Block栈堆转移" class="headerlink" title="栈上的Block栈堆转移"></a>栈上的Block栈堆转移</h3><ul>
+<li>将栈上的Block复制到堆上，这样即使Block记述的变量作用域结束，堆上的Block还可以继续存在。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- (void)blockTest &#123;</span><br><span class="line">    id obj = [self getBlockArray];</span><br><span class="line">    typedef void (^blk_t)(void);</span><br><span class="line">    blk_t blk = (blk_t)[obj objectAtIndex:0];</span><br><span class="line">    blk();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (id)getBlockArray &#123;</span><br><span class="line">    int val = 10;</span><br><span class="line">    return [[NSArray alloc] initWithObjects:^&#123;NSLog(@&quot;blk0:%d&quot;,val);&#125;,^&#123;NSLog(@&quot;blk1:%d&quot;,val);&#125;,nil];</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>执行以上blockTest方法会出错，原因在于变量作用域。<br> [^{NSLog(@”blk0:%d”,val);} copy]移到堆解决问题；</p>
+<h3 id="栈上的Block复制到堆上的时机"><a href="#栈上的Block复制到堆上的时机" class="headerlink" title="栈上的Block复制到堆上的时机"></a>栈上的Block复制到堆上的时机</h3><ul>
+<li>调用block的copy方法时；</li>
+<li>block作为函数返回值返回时；</li>
+<li>将block赋值给<em>__strong</em>修饰的id类型或block类型变量时；</li>
+<li>在方法名中含有usingBlock的Cocoa框架方法或GCD的API中传递Block时；</li>
 </ul>
 
       
@@ -523,7 +532,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Block的数据结构"><span class="nav-number">1.</span> <span class="nav-text">Block的数据结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Block-Tips"><span class="nav-number">2.</span> <span class="nav-text">Block Tips</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Block的数据结构"><span class="nav-number">1.</span> <span class="nav-text">Block的数据结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Block之变量"><span class="nav-number">2.</span> <span class="nav-text">Block之变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#栈上的Block栈堆转移"><span class="nav-number">3.</span> <span class="nav-text">栈上的Block栈堆转移</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#栈上的Block复制到堆上的时机"><span class="nav-number">4.</span> <span class="nav-text">栈上的Block复制到堆上的时机</span></a></li></ol></div>
             
 
           </div>
@@ -543,7 +552,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
