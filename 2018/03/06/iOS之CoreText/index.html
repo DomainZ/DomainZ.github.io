@@ -103,18 +103,18 @@
   <meta name="keywords" content="iOS," />
 
 
-<meta name="description" content="有时候用网页展示一大片图文效果不怎么好，这时候就有必要用CoreText框架实现页面渲染了； 一般流程–  创建DisplayView； 创建显示配置CTFrameParserConfig，定义了渲染宽高，字体大小颜色； 根据服务器返回的json数据（也可以随便定好解析格式）以及上面创建好的config，初始化CoreTextData，类似于下面的代码； 把创建好的CoreTextData赋值给D">
+<meta name="description" content="有时候用网页展示一大片图文效果不怎么好，这时候就有必要用CoreText框架实现页面渲染了； CoreText重要的几个元素 CTFramesetterRef CTFrameRef CTLineRef CTRunRef  CTFrame 作为一个整体的画布(Canvas)，其中由行(CTLine)组成，而每行可以分为一个或多个小方块（CTRun）。 一般流程 使用core text就是先有一个要显">
 <meta name="keywords" content="iOS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS之CoreText">
 <meta property="og:url" content="https://domainz/github.io/2018/03/06/iOS之CoreText/index.html">
 <meta property="og:site_name" content="Jim zhang&#39;s Blog">
-<meta property="og:description" content="有时候用网页展示一大片图文效果不怎么好，这时候就有必要用CoreText框架实现页面渲染了； 一般流程–  创建DisplayView； 创建显示配置CTFrameParserConfig，定义了渲染宽高，字体大小颜色； 根据服务器返回的json数据（也可以随便定好解析格式）以及上面创建好的config，初始化CoreTextData，类似于下面的代码； 把创建好的CoreTextData赋值给D">
+<meta property="og:description" content="有时候用网页展示一大片图文效果不怎么好，这时候就有必要用CoreText框架实现页面渲染了； CoreText重要的几个元素 CTFramesetterRef CTFrameRef CTLineRef CTRunRef  CTFrame 作为一个整体的画布(Canvas)，其中由行(CTLine)组成，而每行可以分为一个或多个小方块（CTRun）。 一般流程 使用core text就是先有一个要显">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-30T09:24:46.177Z">
+<meta property="og:updated_time" content="2019-08-30T09:55:04.332Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS之CoreText">
-<meta name="twitter:description" content="有时候用网页展示一大片图文效果不怎么好，这时候就有必要用CoreText框架实现页面渲染了； 一般流程–  创建DisplayView； 创建显示配置CTFrameParserConfig，定义了渲染宽高，字体大小颜色； 根据服务器返回的json数据（也可以随便定好解析格式）以及上面创建好的config，初始化CoreTextData，类似于下面的代码； 把创建好的CoreTextData赋值给D">
+<meta name="twitter:description" content="有时候用网页展示一大片图文效果不怎么好，这时候就有必要用CoreText框架实现页面渲染了； CoreText重要的几个元素 CTFramesetterRef CTFrameRef CTLineRef CTRunRef  CTFrame 作为一个整体的画布(Canvas)，其中由行(CTLine)组成，而每行可以分为一个或多个小方块（CTRun）。 一般流程 使用core text就是先有一个要显">
 
 
 
@@ -326,28 +326,32 @@
 
       
         <p>有时候用网页展示一大片图文效果不怎么好，这时候就有必要用CoreText框架实现页面渲染了；</p>
-<h4 id="一般流程"><a href="#一般流程" class="headerlink" title="一般流程"></a>一般流程</h4><p>–</p>
-<ul>
-<li>创建DisplayView；</li>
-<li>创建显示配置CTFrameParserConfig，定义了渲染宽高，字体大小颜色；</li>
-<li>根据服务器返回的json数据（也可以随便定好解析格式）以及上面创建好的config，初始化CoreTextData，类似于下面的代码；</li>
-<li>把创建好的CoreTextData赋值给DisplayView，drawRect显示出来；</li>
+<h4 id="CoreText重要的几个元素"><a href="#CoreText重要的几个元素" class="headerlink" title="CoreText重要的几个元素"></a>CoreText重要的几个元素</h4><ul>
+<li>CTFramesetterRef</li>
+<li>CTFrameRef</li>
+<li>CTLineRef</li>
+<li>CTRunRef</li>
 </ul>
-<h4 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h4><p>–</p>
+<p>CTFrame 作为一个整体的画布(Canvas)，其中由行(CTLine)组成，而每行可以分为一个或多个小方块（CTRun）。<br></p>
+<h4 id="一般流程"><a href="#一般流程" class="headerlink" title="一般流程"></a>一般流程</h4><hr>
+<p>使用core text就是先有一个要显示的string，然后定义这个string每个部分的样式－&gt;attributedString －&gt; 生成 CTFramesetter -&gt; 得到CTFrame -&gt; 绘制（CTFrameDraw）;</p>
+<h4 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h4><hr>
 <ol>
 <li>DisplayView继承子UIView，重写[drawRect:]方法。该方法通过传入的CTFrameRef，然后通过CTFrameDraw(self.data.ctFrame, context)就显示完毕;</li>
-<li>自定义一个CTFrameParser把接口数据转换成包含CTFrameRef CoreTextData的对象，解析过程如下：<ul>
-<li>把文本AttributedString创建CTFramesetterRef实例；</li>
-<li>获得要绘制的区域的高度；</li>
-<li>生成CTFrameRef实例；</li>
+<li>自定义一个Parser把接口数据转换成包含CTFrameRef的CoreTextData的对象，解析过程如下：<ul>
+<li>创建AttributeString，这一步最关键；</li>
+<li>根据AttributeString创建CTFramesetterRef实例；</li>
+<li>根据CTFramesetterRef获取绘制高度；</li>
+<li>根据CTFramesetterRef获取CTFrameRef；</li>
 <li>将生成好的CTFrameRef实例和计算好的绘制高度保存到CoreTextData实例中，最后返回CoreTextData实例；</li>
 </ul>
 </li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">+ (CoreTextData *)parseAttributedContent:(NSAttributedString *)content config:(CTFrameParserConfig*)config &#123;</span><br><span class="line">    // 创建CTFramesetterRef实例</span><br><span class="line">    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((CFAttributedStringRef)content);</span><br><span class="line">    </span><br><span class="line">    // 获得要绘制的区域的高度</span><br><span class="line">    CGSize restrictSize = CGSizeMake(config.width, CGFLOAT_MAX);</span><br><span class="line">    CGSize coreTextSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0,0), nil, restrictSize, nil);</span><br><span class="line">    CGFloat textHeight = coreTextSize.height;</span><br><span class="line">    // 生成CTFrameRef实例</span><br><span class="line">    CTFrameRef frame = [self createFrameWithFramesetter:framesetter config:config height:textHeight];</span><br><span class="line">    </span><br><span class="line">    // 将生成好的CTFrameRef实例和计算好的绘制高度保存到CoreTextData实例中，最后返回CoreTextData实例</span><br><span class="line">    CoreTextData *data = [[CoreTextData alloc] init];</span><br><span class="line">    data.ctFrame = frame;</span><br><span class="line">    data.height = textHeight;</span><br><span class="line">    data.content = content;</span><br><span class="line">    </span><br><span class="line">    // 释放内存</span><br><span class="line">    CFRelease(frame);</span><br><span class="line">    CFRelease(framesetter);</span><br><span class="line">    return data;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (CTFrameRef)createFrameWithFramesetter:(CTFramesetterRef)framesetter</span><br><span class="line">                                  config:(CTFrameParserConfig *)config</span><br><span class="line">                                  height:(CGFloat)height &#123;</span><br><span class="line">    CGMutablePathRef path = CGPathCreateMutable();</span><br><span class="line">    CGPathAddRect(path, NULL, CGRectMake(0, 0, config.width, height));</span><br><span class="line">    </span><br><span class="line">    CTFrameRef frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, NULL);</span><br><span class="line">    CFRelease(path);</span><br><span class="line">    return frame;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h4><p>–<br>如果光是文本确实没什么好说的，但是加入了图片、链接、选中、选中menu、点击图片手势等细节之后很多地方有点费劲；</p>
+<h4 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h4><hr>
+<p>如果光是文本确实没什么好说的，但是加入了图片、链接、选中、选中menu、点击图片手势等细节之后很多地方有点费劲；</p>
 <ul>
-<li>图片的填充，在生成Attributestr的时候，根据接口来的array数据遍历append；如果其中的一个元素是图片，就创建空白占位符，并且设置它的CTRunDelegate信息，在frameref创建好之后，通过CTRunDelegate初始化imageData.imagePosition。在最终drawrect的时候调用CGContextDrawImage(context, imageData.imagePosition, image.CGImage);就能够显示图片；</li>
+<li>图片的填充，在生成Attributestr的时候，根据接口来的array数据遍历append；如果其中的一个元素是图片，就创建空白占位符，并且设置它的CTRunDelegate信息，如果给CTRun设置了CTRunDelegateRef属性框架，在渲染CTRun的时候会调用设置的delegate获取decent、ascent、width等信息用来绘制。FrameRef创建好之后，遍历FrameRef的line以及line中的run初始化imageData.imagePosition，在最终drawrect的时候调用CGContextDrawImage(context, imageData.imagePosition, image.CGImage)就能够显示图片；</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">static CGFloat ascentCallback(void *ref)&#123;</span><br><span class="line">    CGFloat picWidth = [[(__bridge NSDictionary *)ref objectForKey:@&quot;width&quot;] floatValue];</span><br><span class="line">    CGFloat picHeight = [[(__bridge NSDictionary *)ref objectForKey:@&quot;height&quot;] floatValue];</span><br><span class="line">    CGFloat height = defaultConfig.width/(picWidth/picHeight);</span><br><span class="line">    return height;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static CGFloat descentCallback(void *ref)&#123;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static CGFloat widthCallback(void* ref)&#123;</span><br><span class="line">    return defaultConfig.width;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (NSAttributedString *)parseImageDataFromNSDictionary:(NSDictionary *)dict</span><br><span class="line">                                                config:(CTFrameParserConfig*)config &#123;</span><br><span class="line">    CTRunDelegateCallbacks callbacks;</span><br><span class="line">    memset(&amp;callbacks, 0, sizeof(CTRunDelegateCallbacks));</span><br><span class="line">    callbacks.version = kCTRunDelegateVersion1;</span><br><span class="line">    callbacks.getAscent = ascentCallback;</span><br><span class="line">    callbacks.getDescent = descentCallback;</span><br><span class="line">    callbacks.getWidth = widthCallback;</span><br><span class="line">    CTRunDelegateRef delegate = CTRunDelegateCreate(&amp;callbacks, (__bridge void *)(dict));</span><br><span class="line">    </span><br><span class="line">    // 使用0xFFFC作为空白的占位符</span><br><span class="line">    unichar objectReplacementChar = 0xFFFC;</span><br><span class="line">    NSString * content = [NSString stringWithCharacters:&amp;objectReplacementChar length:1];</span><br><span class="line">    NSDictionary * attributes = [self attributesWithConfig:config withContentTypeStr:@&quot;pic&quot;];</span><br><span class="line">    NSMutableAttributedString * space = [[NSMutableAttributedString alloc] initWithString:content</span><br><span class="line">                                                                               attributes:attributes];</span><br><span class="line">    CFAttributedStringSetAttribute((CFMutableAttributedStringRef)space, CFRangeMake(0, 1),</span><br><span class="line">                                   kCTRunDelegateAttributeName, delegate);</span><br><span class="line">    CFRelease(delegate);</span><br><span class="line">    return space;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
@@ -539,7 +543,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一般流程"><span class="nav-number">1.</span> <span class="nav-text">一般流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#细节"><span class="nav-number">2.</span> <span class="nav-text">细节</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注意事项"><span class="nav-number">3.</span> <span class="nav-text">注意事项</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#CoreText重要的几个元素"><span class="nav-number">1.</span> <span class="nav-text">CoreText重要的几个元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一般流程"><span class="nav-number">2.</span> <span class="nav-text">一般流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#细节"><span class="nav-number">3.</span> <span class="nav-text">细节</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注意事项"><span class="nav-number">4.</span> <span class="nav-text">注意事项</span></a></li></ol></div>
             
 
           </div>
