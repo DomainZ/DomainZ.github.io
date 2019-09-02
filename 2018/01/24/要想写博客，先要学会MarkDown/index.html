@@ -106,15 +106,15 @@
 <meta name="description" content="一般写文字先开始一个描述，就是说说这篇文章是将什么的？然后开始几个大标题，大标题里面几个小标题。文章前情说完了。 这里要写一个大标题大标题下面有几个小标题 如果要写1234的列表; 如果说明的文字里面有链接Server 如果要突出文字，加粗、斜体，开始派上用场了; 如果引用了一波； 这是引用    小标题一如果不幸是码农: 1UIView *shareBoardView = [[[NSBundle">
 <meta name="keywords" content="MarkDown">
 <meta property="og:type" content="article">
-<meta property="og:title" content="要想写博客，先要学会MarkDown">
+<meta property="og:title" content="MarkDown &amp;&amp; Hexo">
 <meta property="og:url" content="https://domainz/github.io/2018/01/24/要想写博客，先要学会MarkDown/index.html">
 <meta property="og:site_name" content="Jim zhang&#39;s Blog">
 <meta property="og:description" content="一般写文字先开始一个描述，就是说说这篇文章是将什么的？然后开始几个大标题，大标题里面几个小标题。文章前情说完了。 这里要写一个大标题大标题下面有几个小标题 如果要写1234的列表; 如果说明的文字里面有链接Server 如果要突出文字，加粗、斜体，开始派上用场了; 如果引用了一波； 这是引用    小标题一如果不幸是码农: 1UIView *shareBoardView = [[[NSBundle">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://domainz/2018/01/24/要想写博客，先要学会MarkDown/avatar.jpg">
-<meta property="og:updated_time" content="2018-12-12T02:57:56.990Z">
+<meta property="og:updated_time" content="2019-09-02T03:33:21.644Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="要想写博客，先要学会MarkDown">
+<meta name="twitter:title" content="MarkDown &amp;&amp; Hexo">
 <meta name="twitter:description" content="一般写文字先开始一个描述，就是说说这篇文章是将什么的？然后开始几个大标题，大标题里面几个小标题。文章前情说完了。 这里要写一个大标题大标题下面有几个小标题 如果要写1234的列表; 如果说明的文字里面有链接Server 如果要突出文字，加粗、斜体，开始派上用场了; 如果引用了一波； 这是引用    小标题一如果不幸是码农: 1UIView *shareBoardView = [[[NSBundle">
 <meta name="twitter:image" content="https://domainz/2018/01/24/要想写博客，先要学会MarkDown/avatar.jpg">
 
@@ -126,7 +126,7 @@
   <link rel="canonical" href="https://domainz/github.io/2018/01/24/要想写博客，先要学会MarkDown/"/>
 
 
-  <title>要想写博客，先要学会MarkDown | Jim zhang's Blog</title>
+  <title>MarkDown && Hexo | Jim zhang's Blog</title>
   
 
 
@@ -290,7 +290,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">要想写博客，先要学会MarkDown</h1>
+          <h1 class="post-title" itemprop="name headline">MarkDown && Hexo</h1>
         
 
         <div class="post-meta">
@@ -311,6 +311,24 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Blog/" itemprop="url" rel="index"><span itemprop="name">Blog</span></a></span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -360,6 +378,15 @@
 <li>hexo s    //本地服务器运行，通过localhost访问</li>
 <li>hexo d    //部署</li>
 </ol>
+<p>通过以下初始化归档和分类目录</p>
+<ol>
+<li>hexo new page “categories”</li>
+<li>hexo new page “tags” </li>
+<li>打开 categories 文件夹下的 index.md ，在最下面一行加一行文字就行，注意中间有空格。type: categories;</li>
+<li>打开 tags 文件夹下的 index.md ，在最下面一行加一行文字就行，注意中间有空格。type: tags;</li>
+</ol>
+<p>通过配置_config.yml的excerpt设置文章的展开全文</p>
+<p>0._config.yml–&gt; excerpt = true</p>
 
       
     </div>
@@ -447,17 +474,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -483,15 +501,24 @@
               
 
               
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
 
               
                 
                 
                 <div class="site-state-item site-state-tags">
-                  
+                  <a href="/tags/index.html">
                     <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">标签</span>
-                  
+                  </a>
                 </div>
               
             </nav>
@@ -531,22 +558,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#这里要写一个大标题"><span class="nav-number">1.</span> <span class="nav-text">这里要写一个大标题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#大标题下面有几个小标题"><span class="nav-number">1.1.</span> <span class="nav-text">大标题下面有几个小标题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小标题一"><span class="nav-number">1.2.</span> <span class="nav-text">小标题一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小标题二"><span class="nav-number">1.3.</span> <span class="nav-text">小标题二</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MD编辑好了，然后用hexo相关命令发布上去"><span class="nav-number">1.4.</span> <span class="nav-text">MD编辑好了，然后用hexo相关命令发布上去</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
