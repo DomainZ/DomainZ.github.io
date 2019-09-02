@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="zh-CN">
+<html class="theme-next mist use-motion" lang="zh-CN">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -75,7 +75,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Mist',
     version: '6.0.2',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: false,
@@ -209,6 +209,18 @@
         </li>
       
         
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+        </li>
+      
+        
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
@@ -325,65 +337,15 @@
       
         
           
-            <h3 id="什么是GCD"><a href="#什么是GCD" class="headerlink" title="什么是GCD"></a>什么是GCD</h3><p>GCD（Grand Central Dispatch）是异步执行任务的技术之一（iOS中其他多线程技术：pthread、NSThread、NSOperation）。开发者只需要定义想要执行的任务并追加到适当的Dispatch Quue中，GCD就能生成必要的线程并执行，<strong>通过GCD提供的系统级线程管理可以提高执行效率</strong>。</p>
-<h4 id="GCD队列"><a href="#GCD队列" class="headerlink" title="GCD队列"></a>GCD队列</h4><p>–<br><strong>队列与线程的关系</strong></p>
-<p>队列和线程并非拥有关系，队列是任务容器（一种数据结构），CPU从队列中取出任务，放到对应的线程上去执行。</p>
-<p><strong>串行队列与并发队列</strong></p>
-<ul>
-<li>串行队列同时执行的处理数只有一个，按照顺序执行。</li>
-<li>并发队列执的行顺序会取决于处理的任务量和系统的状态（CPU核数、CPU负荷等）。</li>
-<li>多个串行队列可并发执行，每个串行队列都使用各自的一个线程。</li>
-</ul>
-<p>当生成多个串行队列时，各个串行队列将并发执行。一旦生成串行队列并追加任务处理，<strong>系统对于一个串行队列就只使用一个线程。</strong>如果使用过多线程，就会消耗大量内存，引起大量的上下文切换，大幅度降低系统的响应性能。<strong>并发队列不会出现以上问题，不管生成多少，XNU内核只使用有效管理的线程。</strong></p>
-<p><strong>主队列与全局队列</strong></p>
-<ul>
-<li><p>追加到主队列的任务在主线程的RunLoop中执行，如更新用户界面的处理必须追加到主队列中，与NSObject类的performSelectorOnMainThread实例方法相同。</p>
-</li>
-<li><p>全局队列无需逐个创建并发队列，只要获取使用即可。全局队列有四个优先级，优先级只是大致判断，并不能保证线程的实时性。</p>
-</li>
-</ul>
-<h4 id="GCD函数"><a href="#GCD函数" class="headerlink" title="GCD函数"></a>GCD函数</h4><p><strong>1.dispatch_set_ target_queue</strong></p>
-<p>变更队列优先级</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * param1 要变更的队列，不能指定主队列和全局队列</span><br><span class="line"> * param2 目标队列，指定全局队列</span><br><span class="line"> */</span><br><span class="line">dispatch_set_target_queue(myQueue, backgroundQueue);</span><br></pre></td></tr></table></figure>
-<p>防止多个串行队列并发执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">- (void)dispatch_queue_test_2 &#123;</span><br><span class="line">    NSMutableArray *array = [NSMutableArray array];</span><br><span class="line">    // 设置目标队列</span><br><span class="line">    dispatch_queue_t targetQueue = dispatch_queue_create(&quot;com.target.serialQueue&quot;, DISPATCH_QUEUE_SERIAL);</span><br><span class="line">    for (int i = 0; i &lt; 5; i ++) &#123;</span><br><span class="line">        dispatch_queue_t serialQueue = dispatch_queue_create(&quot;com.example.serialQueue&quot;, DISPATCH_QUEUE_SERIAL);</span><br><span class="line">        // 给每个串行队列指定相同的目标队列</span><br><span class="line">        dispatch_set_target_queue(serialQueue, targetQueue);</span><br><span class="line">        [array addObject:serialQueue];</span><br><span class="line">    &#125;</span><br><span class="line">    [array enumerateObjectsUsingBlock:^(dispatch_queue_t queue, NSUInteger idx, BOOL * _Nonnull stop) &#123;</span><br><span class="line"></span><br><span class="line">        dispatch_async(queue, ^&#123;</span><br><span class="line">            NSLog(@&quot;执行队列：%ld&quot;,idx);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">执行队列：0</span><br><span class="line">执行队列：1</span><br><span class="line">执行队列：2</span><br><span class="line">执行队列：3</span><br><span class="line">执行队列：4</span><br></pre></td></tr></table></figure>
-<p><strong>2.dispatch_after</strong></p>
-<p>dispatch_after函数是在<strong>指定时间追加任务到指定队列中</strong>，并不是在指定时间后执行任务。想大致延迟任务时，该函数非常有效。</p>
-<p><strong>3.Dispatch Group</strong></p>
-<p>Dispatch Group适用于多个任务执行结束后，再执行某个指定的任务。创建任务组使用dispatch_group_create函数，追加任务使用dispatch_group_async函数。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">- (void)dispatch_notify &#123;</span><br><span class="line">    // 组</span><br><span class="line">    dispatch_group_t group = dispatch_group_create();</span><br><span class="line"></span><br><span class="line">    // 队列</span><br><span class="line">    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);</span><br><span class="line"></span><br><span class="line">    // 5个任务</span><br><span class="line">    for (NSInteger index = 0; index &lt; 5; index ++) &#123;</span><br><span class="line"></span><br><span class="line">        /**</span><br><span class="line">         * param1 组</span><br><span class="line">         * param2 队列</span><br><span class="line">         */</span><br><span class="line">        dispatch_group_async(group, queue, ^&#123;</span><br><span class="line"></span><br><span class="line">            NSLog(@&quot;任务%ld&quot;, index);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 监听任务的完成</span><br><span class="line">     * param1 组</span><br><span class="line">     * param2 队列</span><br><span class="line">     */</span><br><span class="line">    dispatch_group_notify(group, queue, ^&#123;</span><br><span class="line">        NSLog(@&quot;任务完成&quot;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">任务1</span><br><span class="line">任务2</span><br><span class="line">任务0</span><br><span class="line">任务3</span><br><span class="line">任务完成</span><br></pre></td></tr></table></figure>
-<p>dispatch_group_wait函数。可以指定gropu任务超时的时间，无论指定的超时时间和group中任务完成哪个先到，dispatch_group_wait函数都会执行并有返回值。返回值为0即指定时间内任务全部完成，不为0则已超时，任务继续。<br>在dispatch_group_wait指定超时时间或group任务完成之前，执行dispatch_group_wait函数的当前线程阻塞。推荐使用dispatch_group_notify函数追加结束任务到队列中，因为 dispatch_group_notify函数可以简化源代码。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">// 指定超时时间为2秒</span><br><span class="line">dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC));</span><br><span class="line">long result = dispatch_group_wait(group, time);</span><br><span class="line">if (result == 0) &#123;</span><br><span class="line">	NSLog(@&quot;未超时，任务已经完成&quot;);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">   NSLog(@&quot;已超时，任务仍在继续&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>4.dispatch_barrier_async</strong></p>
-<p>避免数据竞争的思路：在写入处理结束之前，读取处理不可执行，写入处理追加到串行队列中，为了提高效率，读取处理追加到并发队列中。</p>
-<p>GCD 提供更高效的方法：dispatch_barrier_async函数，该函数如同栅栏一般，使用并发队列和dispatch_barrier_async函数可实现高效率的数据访问和文件访问。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">- (void)dispatch_barrier &#123;</span><br><span class="line">    void (^blk_reading) (void) = ^&#123;</span><br><span class="line">        for (NSInteger i = 0; i &lt; 10000; i ++) &#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        NSLog(@&quot;读取操作&quot;);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    void (^blk_writing) (void) = ^&#123;</span><br><span class="line">        for (NSInteger i = 0; i &lt; 10000; i ++) &#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        NSLog(@&quot;写入操作&quot;);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    dispatch_queue_t queue = dispatch_queue_create(&quot;com.example.concurrentQueue&quot;, DISPATCH_QUEUE_CONCURRENT);</span><br><span class="line"></span><br><span class="line">    dispatch_async(queue, blk_reading);</span><br><span class="line">    dispatch_async(queue, blk_reading);</span><br><span class="line">    dispatch_async(queue, blk_reading);</span><br><span class="line">    dispatch_barrier_async(queue, blk_writing);</span><br><span class="line">    dispatch_async(queue, blk_reading);</span><br><span class="line">    dispatch_async(queue, blk_reading);</span><br><span class="line">    dispatch_async(queue, blk_reading);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">读取操作</span><br><span class="line">读取操作</span><br><span class="line">读取操作</span><br><span class="line">写入操作</span><br><span class="line">读取操作</span><br><span class="line">读取操作</span><br><span class="line">读取操作</span><br></pre></td></tr></table></figure>
-<p><strong>5.dispatch_sync</strong></p>
-<p>与dispatch_group_wait相似，dispatch_sync的“等待”意味着阻塞当前线程，直到任务执行完毕，也可以说是简易版的dispatch_group_wait。</p>
-<p>适用于在主线程中使用其他线程执行任务，任务结束后使用所得到的结果。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (void)dispatch_sync_0 &#123;</span><br><span class="line">    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);</span><br><span class="line">    dispatch_sync(queue, ^&#123;</span><br><span class="line">        NSLog(@&quot;同步处理&quot;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>注意：由于dispatch_sync会阻塞当前线程，使用不当会引起死锁，以下两例都会死锁。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">- (void)dispatch_sync_1 &#123;</span><br><span class="line"></span><br><span class="line">    dispatch_queue_t queue = dispatch_get_main_queue();</span><br><span class="line"></span><br><span class="line">    dispatch_sync(queue, ^&#123;</span><br><span class="line"></span><br><span class="line">        NSLog(@&quot;同步处理&quot;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)dispatch_sync_2 &#123;</span><br><span class="line"></span><br><span class="line">    // 每个串行队列都会对应一个线程</span><br><span class="line">    dispatch_queue_t queue = dispatch_queue_create(&quot;com.example.serialQueue&quot;, DISPATCH_QUEUE_SERIAL);</span><br><span class="line"></span><br><span class="line">    dispatch_async(queue, ^&#123;</span><br><span class="line">        dispatch_sync(queue, ^&#123;</span><br><span class="line">            NSLog(@&quot;同步处理&quot;);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>6.dispatch_apply</strong></p>
-<p>dispatch_apply函数按照指定的次数将Block任务追加到指定的队列中，等待任务完成再执行其他操作。与 dispatch_sync一样，dispatch_apply也会阻塞线程。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">- (void)dispatch_apply_1 &#123;</span><br><span class="line">    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * param1 次数</span><br><span class="line">     * param2 指定的队列</span><br><span class="line">     * param3 带参数的Block</span><br><span class="line">     */</span><br><span class="line">    dispatch_apply(10, queue, ^(size_t index) &#123;</span><br><span class="line">        NSLog(@&quot;任务%zu完成&quot;, index);</span><br><span class="line">    &#125;);</span><br><span class="line">    NSLog(@&quot;全部完成&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)dispatch_apply_2 &#123;</span><br><span class="line">    NSArray *array = @[@&quot;任务1&quot;, @&quot;任务2&quot;, @&quot;任务3&quot;, @&quot;任务4&quot;, @&quot;任务5&quot;, @&quot;任务6&quot;, @&quot;任务7&quot;, @&quot;任务8&quot;];</span><br><span class="line"></span><br><span class="line">    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);</span><br><span class="line">    dispatch_async(queue, ^&#123;</span><br><span class="line">        dispatch_apply([array count], queue, ^(size_t index) &#123;</span><br><span class="line">            // 处理任务</span><br><span class="line">            NSLog(@&quot;%@&quot;, [array objectAtIndex:index]);</span><br><span class="line">        &#125;);</span><br><span class="line">        dispatch_async(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">            NSLog(@&quot;任务完成，更新UI&quot;);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>7.dispatch_suspend / dispatch_resume</strong></p>
-<p>这些操作不影响已经执行的任务。挂起后，队列中未执行的任务会停止，恢复后这些任务会继续执行。</p>
-<p><strong>8.Dispatch Semaphore</strong></p>
-<p>信号量用于对资源进行加锁操作。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">- (void)dispatch_semaphore_1 &#123;</span><br><span class="line"></span><br><span class="line">    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);</span><br><span class="line">    dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);</span><br><span class="line"></span><br><span class="line">    NSMutableArray *array = [[NSMutableArray alloc] init];</span><br><span class="line"></span><br><span class="line">    for (NSInteger i = 0; i &lt; 10000; i ++) &#123;</span><br><span class="line"></span><br><span class="line">        dispatch_async(queue, ^&#123;</span><br><span class="line"></span><br><span class="line">            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);</span><br><span class="line"></span><br><span class="line">            // 模拟数据写入操作</span><br><span class="line">            [array addObject:@(i)];</span><br><span class="line"></span><br><span class="line">            dispatch_semaphore_signal(semaphore);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>信号量用于链式请求，限制一个请求完成后再去执行下一个。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">- (void)dispatch_semaphore_2 &#123;</span><br><span class="line"></span><br><span class="line">    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^&#123;</span><br><span class="line"></span><br><span class="line">        NSArray *array = @[@&quot;1&quot;, @&quot;2&quot;, @&quot;3&quot;, @&quot;4&quot;, @&quot;5&quot;];</span><br><span class="line"></span><br><span class="line">        // 初始化信号量为0</span><br><span class="line">        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);</span><br><span class="line"></span><br><span class="line">        [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) &#123;</span><br><span class="line"></span><br><span class="line">            [self requestWithCompletion:^(NSDictionary *dict) &#123;</span><br><span class="line"></span><br><span class="line">                NSLog(@&quot;%@-%@&quot;, dict[@&quot;message&quot;], obj);</span><br><span class="line"></span><br><span class="line">                dispatch_semaphore_signal(semaphore);</span><br><span class="line">            &#125;];</span><br><span class="line"></span><br><span class="line">            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);</span><br><span class="line">        &#125;];</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">- (void)requestWithCompletion:(void(^)(NSDictionary *dict))completion &#123;</span><br><span class="line">	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^&#123;</span><br><span class="line">        //模拟网络请求</span><br><span class="line">        sleep(2);</span><br><span class="line">        !completion ? nil : completion(@&#123;@&quot;message&quot;:@&quot;任务完成&quot;&#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>9.dispatch_once</strong></p>
-<p>dispatch_once函数能保证应用程序中任务只执行一次，该代码在多线程环境下执行可保证百分之百安全。常用于生成单例。</p>
-
-          
+          什么是GCDGCD（Grand Central Dispatch）是异步执行任务的技术之一（iOS中其他多线程技术：pthread、NSThread、NSOperation）。开发者只需要定义想要执行的任务并追加到适当的Dispatch Quue中，GCD就能生成必要的线程并执行，通过GCD提供的系
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/08/30/iOS之GCD/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -502,41 +464,22 @@
       
         
           
-            <p>有时候用网页展示一大片图文效果不怎么好，这时候就有必要用CoreText框架实现页面渲染了；</p>
-<h4 id="CoreText重要的几个元素"><a href="#CoreText重要的几个元素" class="headerlink" title="CoreText重要的几个元素"></a>CoreText重要的几个元素</h4><ul>
-<li>CTFramesetterRef</li>
-<li>CTFrameRef</li>
-<li>CTLineRef</li>
-<li>CTRunRef</li>
-</ul>
-<p>CTFrame 作为一个整体的画布(Canvas)，其中由行(CTLine)组成，而每行可以分为一个或多个小方块（CTRun）。<br></p>
-<h4 id="一般流程"><a href="#一般流程" class="headerlink" title="一般流程"></a>一般流程</h4><hr>
-<p>使用core text就是先有一个要显示的string，然后定义这个string每个部分的样式－&gt;attributedString －&gt; 生成 CTFramesetter -&gt; 得到CTFrame -&gt; 绘制（CTFrameDraw）;</p>
-<h4 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h4><hr>
-<ol>
-<li>DisplayView继承子UIView，重写[drawRect:]方法。该方法通过传入的CTFrameRef，然后通过CTFrameDraw(self.data.ctFrame, context)就显示完毕;</li>
-<li>自定义一个Parser把接口数据转换成包含CTFrameRef的CoreTextData的对象，解析过程如下：<ul>
-<li>创建AttributeString，这一步最关键；</li>
-<li>根据AttributeString创建CTFramesetterRef实例；</li>
-<li>根据CTFramesetterRef获取绘制高度；</li>
-<li>根据CTFramesetterRef获取CTFrameRef；</li>
-<li>将生成好的CTFrameRef实例和计算好的绘制高度保存到CoreTextData实例中，最后返回CoreTextData实例；</li>
-</ul>
-</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">+ (CoreTextData *)parseAttributedContent:(NSAttributedString *)content config:(CTFrameParserConfig*)config &#123;</span><br><span class="line">    // 创建CTFramesetterRef实例</span><br><span class="line">    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((CFAttributedStringRef)content);</span><br><span class="line">    </span><br><span class="line">    // 获得要绘制的区域的高度</span><br><span class="line">    CGSize restrictSize = CGSizeMake(config.width, CGFLOAT_MAX);</span><br><span class="line">    CGSize coreTextSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0,0), nil, restrictSize, nil);</span><br><span class="line">    CGFloat textHeight = coreTextSize.height;</span><br><span class="line">    // 生成CTFrameRef实例</span><br><span class="line">    CTFrameRef frame = [self createFrameWithFramesetter:framesetter config:config height:textHeight];</span><br><span class="line">    </span><br><span class="line">    // 将生成好的CTFrameRef实例和计算好的绘制高度保存到CoreTextData实例中，最后返回CoreTextData实例</span><br><span class="line">    CoreTextData *data = [[CoreTextData alloc] init];</span><br><span class="line">    data.ctFrame = frame;</span><br><span class="line">    data.height = textHeight;</span><br><span class="line">    data.content = content;</span><br><span class="line">    </span><br><span class="line">    // 释放内存</span><br><span class="line">    CFRelease(frame);</span><br><span class="line">    CFRelease(framesetter);</span><br><span class="line">    return data;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (CTFrameRef)createFrameWithFramesetter:(CTFramesetterRef)framesetter</span><br><span class="line">                                  config:(CTFrameParserConfig *)config</span><br><span class="line">                                  height:(CGFloat)height &#123;</span><br><span class="line">    CGMutablePathRef path = CGPathCreateMutable();</span><br><span class="line">    CGPathAddRect(path, NULL, CGRectMake(0, 0, config.width, height));</span><br><span class="line">    </span><br><span class="line">    CTFrameRef frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, NULL);</span><br><span class="line">    CFRelease(path);</span><br><span class="line">    return frame;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h4><hr>
-<p>如果光是文本确实没什么好说的，但是加入了图片、链接、选中、选中menu、点击图片手势等细节之后很多地方有点费劲；</p>
-<ul>
-<li>图片的填充，在生成Attributestr的时候，根据接口来的array数据遍历append；如果其中的一个元素是图片，就创建空白占位符，并且设置它的CTRunDelegate信息，如果给CTRun设置了CTRunDelegateRef属性框架，在渲染CTRun的时候会调用设置的delegate获取decent、ascent、width等信息用来绘制。FrameRef创建好之后，遍历FrameRef的line以及line中的run初始化imageData.imagePosition，在最终drawrect的时候调用CGContextDrawImage(context, imageData.imagePosition, image.CGImage)就能够显示图片；</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">static CGFloat ascentCallback(void *ref)&#123;</span><br><span class="line">    CGFloat picWidth = [[(__bridge NSDictionary *)ref objectForKey:@&quot;width&quot;] floatValue];</span><br><span class="line">    CGFloat picHeight = [[(__bridge NSDictionary *)ref objectForKey:@&quot;height&quot;] floatValue];</span><br><span class="line">    CGFloat height = defaultConfig.width/(picWidth/picHeight);</span><br><span class="line">    return height;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static CGFloat descentCallback(void *ref)&#123;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static CGFloat widthCallback(void* ref)&#123;</span><br><span class="line">    return defaultConfig.width;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (NSAttributedString *)parseImageDataFromNSDictionary:(NSDictionary *)dict</span><br><span class="line">                                                config:(CTFrameParserConfig*)config &#123;</span><br><span class="line">    CTRunDelegateCallbacks callbacks;</span><br><span class="line">    memset(&amp;callbacks, 0, sizeof(CTRunDelegateCallbacks));</span><br><span class="line">    callbacks.version = kCTRunDelegateVersion1;</span><br><span class="line">    callbacks.getAscent = ascentCallback;</span><br><span class="line">    callbacks.getDescent = descentCallback;</span><br><span class="line">    callbacks.getWidth = widthCallback;</span><br><span class="line">    CTRunDelegateRef delegate = CTRunDelegateCreate(&amp;callbacks, (__bridge void *)(dict));</span><br><span class="line">    </span><br><span class="line">    // 使用0xFFFC作为空白的占位符</span><br><span class="line">    unichar objectReplacementChar = 0xFFFC;</span><br><span class="line">    NSString * content = [NSString stringWithCharacters:&amp;objectReplacementChar length:1];</span><br><span class="line">    NSDictionary * attributes = [self attributesWithConfig:config withContentTypeStr:@&quot;pic&quot;];</span><br><span class="line">    NSMutableAttributedString * space = [[NSMutableAttributedString alloc] initWithString:content</span><br><span class="line">                                                                               attributes:attributes];</span><br><span class="line">    CFAttributedStringSetAttribute((CFMutableAttributedStringRef)space, CFRangeMake(0, 1),</span><br><span class="line">                                   kCTRunDelegateAttributeName, delegate);</span><br><span class="line">    CFRelease(delegate);</span><br><span class="line">    return space;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>通过上一步设置好占位符初始化好CTFrameRef之后，再遍历整个CTFrameRef的line，通过(NSArray *)CTLineGetGlyphRuns(line)获取每一行的CTRunDelegateRef，调用之前设置好的delegate方法，设置好image的显示的rect；</li>
-<li>CoreTextImageData的imagePosition属性; // 此坐标是CoreText的坐标系，而不是UIKit的坐标系；</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">for (int i = 0; i &lt; lineCount; ++i) &#123;</span><br><span class="line">        if (imageData == nil) &#123;</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">        CTLineRef line = (__bridge CTLineRef)lines[i];</span><br><span class="line">        NSArray * runObjArray = (NSArray *)CTLineGetGlyphRuns(line);</span><br><span class="line">        for (id runObj in runObjArray) &#123;</span><br><span class="line">            CTRunRef run = (__bridge CTRunRef)runObj;</span><br><span class="line">            NSDictionary *runAttributes = (NSDictionary *)CTRunGetAttributes(run);</span><br><span class="line">            CTRunDelegateRef delegate = (__bridge CTRunDelegateRef)[runAttributes valueForKey:(id)kCTRunDelegateAttributeName];</span><br><span class="line">            if (delegate == nil) &#123;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            NSDictionary * metaDic = CTRunDelegateGetRefCon(delegate);</span><br><span class="line">            if (![metaDic isKindOfClass:[NSDictionary class]]) &#123;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            CGRect runBounds;</span><br><span class="line">            CGFloat ascent;</span><br><span class="line">            CGFloat descent;</span><br><span class="line">            runBounds.size.width = CTRunGetTypographicBounds(run, CFRangeMake(0, 0), &amp;ascent, &amp;descent, NULL);</span><br><span class="line">            runBounds.size.height = ascent + descent;</span><br><span class="line">            </span><br><span class="line">            CGFloat xOffset = CTLineGetOffsetForStringIndex(line, CTRunGetStringRange(run).location, NULL);</span><br><span class="line">            runBounds.origin.x = lineOrigins[i].x + xOffset;</span><br><span class="line">            runBounds.origin.y = lineOrigins[i].y;</span><br><span class="line">            runBounds.origin.y -= descent;</span><br><span class="line">            </span><br><span class="line">            CGPathRef pathRef = CTFrameGetPath(self.ctFrame);</span><br><span class="line">            CGRect colRect = CGPathGetBoundingBox(pathRef);</span><br><span class="line">            </span><br><span class="line">            CGRect delegateBounds = CGRectOffset(runBounds, colRect.origin.x, colRect.origin.y);</span><br><span class="line">            </span><br><span class="line">            imageData.imagePosition = delegateBounds;</span><br><span class="line">            imgIndex++;</span><br><span class="line">            if (imgIndex == self.imageArray.count) &#123;</span><br><span class="line">                imageData = nil;</span><br><span class="line">                break;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                imageData = self.imageArray[imgIndex];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-          
+          有时候用网页展示一大片图文效果不怎么好，这时候就有必要用CoreText框架实现页面渲染了；
+CoreText重要的几个元素
+CTFramesetterRef
+CTFrameRef
+CTLineRef
+CTRunRef
+
+CTFrame 作为一个整体的画布(Canvas)，其中由行(CTLine)组
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/06/iOS之CoreText/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -655,454 +598,18 @@
       
         
           
-            <p>UIView, CALayer, CAAnimation，CATransication等；</p>
-<h3 id="呈现树模型树以及同步"><a href="#呈现树模型树以及同步" class="headerlink" title="呈现树模型树以及同步"></a>呈现树模型树以及同步</h3><ul>
-<li>CAAnimation是加载view.layer.presentationlayer上，而不会更新到view.layer.modellayer;</li>
-<li>UIView和UIView的自带layer的属性实际上是对应的是CALayer的modellayer，presentationlayer和modellayer存在同步的关系；</li>
-<li>任意时刻如果CAAnimation加到view.layer上，presentationlayer优先从CAAnimation取状态要怎么刷新，动画做完将回归到modellayer的状态；</li>
-<li>可以使用CADisplaylink定时器，中取view.layer.presentationlayer的bounds，positon，transform等信息同步到uiview的layer上（modellayer）；</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">[CATransaction setAnimationDuration:0.25];</span><br><span class="line">[CATransaction setCompletionBlock:^&#123;</span><br><span class="line">	[self stopDisplayLink];</span><br><span class="line">&#125;];</span><br><span class="line">[CATransaction begin];</span><br><span class="line">[self.videoView.layer addAnimation:group forKey:@&quot;showAnimation&quot;];</span><br><span class="line">[CATransaction commit];</span><br><span class="line">[self startDisplayLink];</span><br><span class="line"> </span><br><span class="line"> - (void)startDisplayLink</span><br><span class="line">&#123;</span><br><span class="line">    self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(handleDisplayLink:)];</span><br><span class="line">    [self.displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)syncLayer</span><br><span class="line">&#123;</span><br><span class="line">    CALayer *presentationLayer = self.videoView.layer.presentationLayer;</span><br><span class="line">    self.videoView.bounds = presentationLayer.bounds;</span><br><span class="line">    self.videoView.center = presentationLayer.position;</span><br><span class="line">    self.videoView.layer.transform = presentationLayer.transform;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)stopDisplayLink</span><br><span class="line">&#123;</span><br><span class="line">    [self syncLayer];</span><br><span class="line">    [self.displayLink invalidate];</span><br><span class="line">    self.displayLink = nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)handleDisplayLink:(CADisplayLink *)displayLink</span><br><span class="line">&#123;</span><br><span class="line">    [self syncLayer];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="UIView的block动画"><a href="#UIView的block动画" class="headerlink" title="UIView的block动画"></a>UIView的block动画</h3><ul>
-<li>对CALayer的animatable属性赋值的时候，会对CALayer的delegate调用[actionForLayer:forKey:]，如果该方法返回nil，则展示默认的动画，如果返回NSNull则不走动画，如果返回一个实现了CAAction协议的对象（例如CABasicAnimtion）则会走这个返回的动画；</li>
-<li>如果设置Layer的animatable方法调用在uiview animation的block里面，则会返回一个CAAnimation<caaction>；<br>UIView的自带layer的delegate是自己，如果不在block里面设置的话，就返回nsnull就不会动了，如果直接加在layer上就返回nil显示隐式动画；</caaction></li>
-</ul>
-<h3 id="CAMediaTiming"><a href="#CAMediaTiming" class="headerlink" title="CAMediaTiming"></a>CAMediaTiming</h3><ul>
-<li>CAAnimation除了实现CAAction协议还实现了CAMediaTiming协议，主要提供控制动画过程需要的各种参数和动画模式；</li>
-</ul>
-<img src="/2018/03/02/iOS之CAAnimation/mediatiming.jpeg" title="mediatiming">
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://domainz/github.io/2018/02/05/iOS之Block/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jim zhang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/webImage/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jim zhang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/05/iOS之Block/" itemprop="url">iOS之Block</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-05T16:05:29+08:00">2018-02-05</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Block用起来很方便，编译过程到底是怎么回事呢？</p>
-<h3 id="Block的数据结构"><a href="#Block的数据结构" class="headerlink" title="Block的数据结构"></a>Block的数据结构</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">struct Block_descriptor_1 &#123;</span><br><span class="line">    uintptr_t reserved;</span><br><span class="line">    uintptr_t size;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">struct Block_layout &#123;</span><br><span class="line">    void *isa;</span><br><span class="line">    volatile int32_t flags; // contains ref count</span><br><span class="line">    int32_t reserved; </span><br><span class="line">    void (*invoke)(void *, ...);</span><br><span class="line">    struct Block_descriptor_1 *descriptor;</span><br><span class="line">    // imported variables</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>Block编译之后成为一个结构体（实际上就是对象类型因为第一位是*isa），一个函数指针，指向的是编译过程中根据block中代码生成的Imp，最后面的是block中代码持有的变量(相当于对象的成员变量)；</p>
-<h3 id="Block之变量"><a href="#Block之变量" class="headerlink" title="Block之变量"></a>Block之变量</h3><ul>
-<li><p>block里面对内外部变量会将其对象化成成员变量不添加<em>__block</em>修饰只能是只读，用<em>__weak</em>修饰外部截取的变量retain count不会+1否则+1强持有；</p>
-</li>
-<li><p>能用<em>__block</em>来指定block中想变更值的截获的变量，在block从栈拷贝到堆的时候，截获的变量都会拷贝到堆上，<em>__block</em>修饰的变量为了能够实现栈和堆都可以正常读写到，栈区的该变量的<em>__forwardingk</em>指针会指向到已经拷贝到堆的变量，读写改变了通过<em>__forwarding</em>指针取值；</p>
-</li>
-<li><p>除了<em>__weak</em>也能用<em>__block</em>解决循环引用，只需要在block语句最会赋值为空；</p>
-</li>
-</ul>
-<h3 id="栈上的Block栈堆转移"><a href="#栈上的Block栈堆转移" class="headerlink" title="栈上的Block栈堆转移"></a>栈上的Block栈堆转移</h3><ul>
-<li>将栈上的Block复制到堆上，这样即使Block记述的变量作用域结束，堆上的Block还可以继续存在。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- (void)blockTest &#123;</span><br><span class="line">    id obj = [self getBlockArray];</span><br><span class="line">    typedef void (^blk_t)(void);</span><br><span class="line">    blk_t blk = (blk_t)[obj objectAtIndex:0];</span><br><span class="line">    blk();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (id)getBlockArray &#123;</span><br><span class="line">    int val = 10;</span><br><span class="line">    return [[NSArray alloc] initWithObjects:^&#123;NSLog(@&quot;blk0:%d&quot;,val);&#125;,^&#123;NSLog(@&quot;blk1:%d&quot;,val);&#125;,nil];</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>执行以上blockTest方法会出错，原因在于变量作用域。<br> [^{NSLog(@”blk0:%d”,val);} copy]移到堆解决问题；</p>
-<h3 id="栈上的Block复制到堆上的时机"><a href="#栈上的Block复制到堆上的时机" class="headerlink" title="栈上的Block复制到堆上的时机"></a>栈上的Block复制到堆上的时机</h3><ul>
-<li>调用block的copy方法时；</li>
-<li>block作为函数返回值返回时；</li>
-<li>将block赋值给<em>__strong</em>修饰的id类型或block类型变量时；</li>
-<li>在方法名中含有usingBlock的Cocoa框架方法或GCD的API中传递Block时；</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://domainz/github.io/2018/02/02/iOS之Runloop/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jim zhang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/webImage/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jim zhang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/02/iOS之Runloop/" itemprop="url">iOS之Runloop</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-02T17:43:45+08:00">2018-02-02</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Runloop,简而言之就是一个死循环用来接受内部和外部事件，定时任务等，和线程有密切的关系；</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@autoreleasepool &#123;</span><br><span class="line">    NSLog(@&quot;begin&quot;);</span><br><span class="line">    int a = UIApplicationMain(argc, argv, nil, 	NSStringFromClass([AppDelegate class]));</span><br><span class="line">    NSLog(@&quot;end&quot;);</span><br><span class="line">    return a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面的end永远也不会打印，UIApplicationMain会启动一个死循环；</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function loop() &#123;</span><br><span class="line">    initialize();</span><br><span class="line">    do &#123;</span><br><span class="line">		var message = get_next_message();</span><br><span class="line">		process_message(message);</span><br><span class="line">    &#125; while (message != quit);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="Runloop的创建"><a href="#Runloop的创建" class="headerlink" title="Runloop的创建"></a>Runloop的创建</h3><p>苹果不允许直接创建Runloop，而是提供了两个方法：</p>
-<ul>
-<li>CFRunLoopGetMain()</li>
-<li>CFRunLoopGetCurrent()</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CFRunLoopRef CFRunLoopGetMain() &#123;</span><br><span class="line">    return _CFRunLoopGet(pthread_main_thread_np());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">CFRunLoopRef CFRunLoopGetCurrent() &#123;</span><br><span class="line">    return _CFRunLoopGet(pthread_self());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>每个方法实际上都传入了一个<strong>线程</strong>参数，实际上是一个thread作为key，Runloop作为value的map。就是说一个线程对应一个最多只可能存在一个runloop的，非主线程不调用CFRunLoopGetCurrent是不会创建对应的Runloop。一般线程执行任务完毕的时候线程和对应Runloop都会被销毁，在某些需求下，需要对Runloop做一些特殊操作，实现线程保活；</p>
-<h3 id="Runloop的API"><a href="#Runloop的API" class="headerlink" title="Runloop的API"></a>Runloop的API</h3><p>RunLoop及其中的Mode的结构体：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">struct __CFRunLoopMode &#123;</span><br><span class="line">    CFStringRef _name;            // Mode Name, 例如 @&quot;kCFRunLoopDefaultMode&quot;</span><br><span class="line">    CFMutableSetRef _sources0;    // Set</span><br><span class="line">    CFMutableSetRef _sources1;    // Set</span><br><span class="line">    CFMutableArrayRef _observers; // Array</span><br><span class="line">    CFMutableArrayRef _timers;    // Array</span><br><span class="line">...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct __CFRunLoop &#123;</span><br><span class="line">    CFMutableSetRef _commonModes;     // Set</span><br><span class="line">    CFMutableSetRef _commonModeItems; // Set&lt;Source/Observer/Timer&gt;</span><br><span class="line">    CFRunLoopModeRef _currentMode;    // Current Runloop Mode</span><br><span class="line">    CFMutableSetRef _modes;           // Set</span><br><span class="line">...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>RunLoop中_modes保存所有的mode，commonModes保存的是标记为common的mode，每当RunLoop的内容发生变化时，RunLoop都会自动将_commonModeItems里的Source/Observer/Timer同步到具有“Common”标记的所有Mode里。基于此，可以通过把item加入_commonModeItems中来实现，即使currentMode切换了，commonModeItems里的任务一样不会被影响，子线程的timer就是应该这样处理。一个runloop的currentMode有且只会指定一种，通常是被系统指定，比如滑动的时候会切到UITrackingRunLoopMode；</p>
-<img src="/2018/02/02/iOS之Runloop/RunLoop_0.jpg" title="RunLoop_0">
-<p>一个RunLoop有很多个Mode,每个Mode里面有{CFRunLoopSourceRef}，[CFRunLoopTimerRef]，[CFRunLoopObserverRef]。每次往RunLoop里面添加任务的时候，只能为之指定一种mode。CFRunLoopSourceRef是基于source的事件来源，CFRunLoopTimerRef和NSTimer如出一辙，CFRunLoopObserverRef是一堆回掉函数指针的数组，用来RunLoop生命周期的回调；</p>
-<p>Example:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//标记一个mode为commonmode</span><br><span class="line">CFRunLoopAddCommonMode(CFRunLoopRef rl, CFRunLoopMode mode);	</span><br><span class="line"></span><br><span class="line">//最后一个参数是modename，也可以是commonmodes字符串，会自动把item添加到_commonModeItems，然后同步到_commonModes。</span><br><span class="line">CFRunLoopAddSource(CFRunLoopRef rl, CFRunLoopSourceRef source, CFRunLoopMode mode);</span><br></pre></td></tr></table></figure>
-<h3 id="Runloop的tips"><a href="#Runloop的tips" class="headerlink" title="Runloop的tips"></a>Runloop的tips</h3><ul>
-<li><p>当调用 performSelector:onThread: 时，实际上其会创建一个Timer 加到对应的线程去，同样的，如果对应线程没有RunLoop该方法也会失效；</p>
-</li>
-<li><p>Timer没有加入到commonmode会出现不调用的情况；</p>
-</li>
-<li><p>基于Runloop obeserve，应用启动，休眠，消亡时刻对autoreleasepool的维护，一般逻辑代码（timer，响应事件）都是在对应线程的runloop中执行，通过obeserve时间点的控制能确保不会出现内存泄漏，还有UI刷新也和Runloop的obeserve相关，<strong>开发者也可以创建obeserve实现在指定的时机执行一些操作</strong>；</p>
-</li>
-<li><p>runMode：beforeDate:，如果没有输入源或定时器连接到运行循环，则此方法立即退出；否则，重复调用在NSDefaultRunLoopMode中运行，直到指定的到期日期。<strong>很多网络库底层为了stream open在子线程会schedule一个保活的custom_runloop（通过添加source），如果是主线程就不用这样了</strong>；</p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://domainz/github.io/2018/01/24/要想写博客，先要学会MarkDown/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jim zhang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/webImage/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jim zhang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/24/要想写博客，先要学会MarkDown/" itemprop="url">要想写博客，先要学会MarkDown</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-24T17:38:42+08:00">2018-01-24</time>
-            
-
-            
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>一般写文字先开始一个描述，就是说说这篇文章是将什么的？然后开始几个大标题，大标题里面几个小标题。文章前情说完了。</p>
-<h2 id="这里要写一个大标题"><a href="#这里要写一个大标题" class="headerlink" title="这里要写一个大标题"></a>这里要写一个大标题</h2><h3 id="大标题下面有几个小标题"><a href="#大标题下面有几个小标题" class="headerlink" title="大标题下面有几个小标题"></a>大标题下面有几个小标题</h3><ol>
-<li>如果要写1234的列表;</li>
-<li>如果说明的文字里面有链接<a href="https://baidu.com" target="_blank" rel="noopener">Server</a></li>
-<li>如果要突出文字，<strong>加粗</strong>、<em>斜体</em>，开始派上用场了;</li>
-<li>如果引用了一波；<blockquote>
-<p>这是引用</p>
-</blockquote>
-</li>
-</ol>
-<h3 id="小标题一"><a href="#小标题一" class="headerlink" title="小标题一"></a>小标题一</h3><p>如果不幸是码农:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UIView *shareBoardView = [[[NSBundle mainBundle] loadNibNamed:@&quot;QBDLShareBoardView&quot; owner:self options:nil] lastObject];</span><br></pre></td></tr></table></figure>
-<h3 id="小标题二"><a href="#小标题二" class="headerlink" title="小标题二"></a>小标题二</h3><p>如果要放一张图片<br><img src="/2018/01/24/要想写博客，先要学会MarkDown/avatar.jpg" title="This is an example image"></p>
-<hr>
-<h3 id="MD编辑好了，然后用hexo相关命令发布上去"><a href="#MD编辑好了，然后用hexo相关命令发布上去" class="headerlink" title="MD编辑好了，然后用hexo相关命令发布上去"></a>MD编辑好了，然后用hexo相关命令发布上去</h3><p><a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">hexo官方文档</a></p>
-<ol>
-<li>hexo new post “blog title”</li>
-<li>hexo g    //生成</li>
-<li>hexo s    //本地服务器运行，通过localhost访问</li>
-<li>hexo d    //部署</li>
-</ol>
-
-          
+          UIView, CALayer, CAAnimation，CATransication等；
+呈现树模型树以及同步
+CAAnimation是加载view.layer.presentationlayer上，而不会更新到view.layer.modellayer;
+UIView和UIView的自带laye
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/02/iOS之CAAnimation/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1139,6 +646,10 @@
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -1196,7 +707,7 @@
                 
                 <div class="site-state-item site-state-tags">
                   
-                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">标签</span>
                   
                 </div>
