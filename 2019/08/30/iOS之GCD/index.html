@@ -103,18 +103,18 @@
   <meta name="keywords" content="Objective-C," />
 
 
-<meta name="description" content="什么是GCDGCD（Grand Central Dispatch）是异步执行任务的技术之一（iOS中其他多线程技术：pthread、NSThread、NSOperation）。开发者只需要定义想要执行的任务并追加到适当的Dispatch Quue中，GCD就能生成必要的线程并执行，通过GCD提供的系统级线程管理可以提高执行效率。 GCD队列 队列与线程的关系 队列和线程并非拥有关系，队列是任务容器">
+<meta name="description" content="什么是GCD?GCD（Grand Central Dispatch）是异步执行任务的技术之一（iOS中其他多线程技术：pthread、NSThread、NSOperation）。开发者只需要定义想要执行的任务并追加到适当的Dispatch Quue中，GCD就能生成必要的线程并执行，通过GCD提供的系统级线程管理可以提高执行效率。 GCD队列 队列与线程的关系 队列和线程并非拥有关系，队列是任务容">
 <meta name="keywords" content="Objective-C">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS之GCD">
+<meta property="og:title" content="OC之GCD">
 <meta property="og:url" content="https://domainz/github.io/2019/08/30/iOS之GCD/index.html">
 <meta property="og:site_name" content="Jim zhang&#39;s Blog">
-<meta property="og:description" content="什么是GCDGCD（Grand Central Dispatch）是异步执行任务的技术之一（iOS中其他多线程技术：pthread、NSThread、NSOperation）。开发者只需要定义想要执行的任务并追加到适当的Dispatch Quue中，GCD就能生成必要的线程并执行，通过GCD提供的系统级线程管理可以提高执行效率。 GCD队列 队列与线程的关系 队列和线程并非拥有关系，队列是任务容器">
+<meta property="og:description" content="什么是GCD?GCD（Grand Central Dispatch）是异步执行任务的技术之一（iOS中其他多线程技术：pthread、NSThread、NSOperation）。开发者只需要定义想要执行的任务并追加到适当的Dispatch Quue中，GCD就能生成必要的线程并执行，通过GCD提供的系统级线程管理可以提高执行效率。 GCD队列 队列与线程的关系 队列和线程并非拥有关系，队列是任务容">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-02T03:31:38.980Z">
+<meta property="og:updated_time" content="2019-09-02T03:36:39.317Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS之GCD">
-<meta name="twitter:description" content="什么是GCDGCD（Grand Central Dispatch）是异步执行任务的技术之一（iOS中其他多线程技术：pthread、NSThread、NSOperation）。开发者只需要定义想要执行的任务并追加到适当的Dispatch Quue中，GCD就能生成必要的线程并执行，通过GCD提供的系统级线程管理可以提高执行效率。 GCD队列 队列与线程的关系 队列和线程并非拥有关系，队列是任务容器">
+<meta name="twitter:title" content="OC之GCD">
+<meta name="twitter:description" content="什么是GCD?GCD（Grand Central Dispatch）是异步执行任务的技术之一（iOS中其他多线程技术：pthread、NSThread、NSOperation）。开发者只需要定义想要执行的任务并追加到适当的Dispatch Quue中，GCD就能生成必要的线程并执行，通过GCD提供的系统级线程管理可以提高执行效率。 GCD队列 队列与线程的关系 队列和线程并非拥有关系，队列是任务容">
 
 
 
@@ -124,7 +124,7 @@
   <link rel="canonical" href="https://domainz/github.io/2019/08/30/iOS之GCD/"/>
 
 
-  <title>iOS之GCD | Jim zhang's Blog</title>
+  <title>OC之GCD | Jim zhang's Blog</title>
   
 
 
@@ -288,7 +288,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">iOS之GCD</h1>
+          <h1 class="post-title" itemprop="name headline">OC之GCD</h1>
         
 
         <div class="post-meta">
@@ -355,7 +355,7 @@
       
 
       
-        <h3 id="什么是GCD"><a href="#什么是GCD" class="headerlink" title="什么是GCD"></a>什么是GCD</h3><p>GCD（Grand Central Dispatch）是异步执行任务的技术之一（iOS中其他多线程技术：pthread、NSThread、NSOperation）。开发者只需要定义想要执行的任务并追加到适当的Dispatch Quue中，GCD就能生成必要的线程并执行，<strong>通过GCD提供的系统级线程管理可以提高执行效率</strong>。</p>
+        <h3 id="什么是GCD"><a href="#什么是GCD" class="headerlink" title="什么是GCD?"></a>什么是GCD?</h3><p>GCD（Grand Central Dispatch）是异步执行任务的技术之一（iOS中其他多线程技术：pthread、NSThread、NSOperation）。开发者只需要定义想要执行的任务并追加到适当的Dispatch Quue中，GCD就能生成必要的线程并执行，<strong>通过GCD提供的系统级线程管理可以提高执行效率</strong>。</p>
 <h4 id="GCD队列"><a href="#GCD队列" class="headerlink" title="GCD队列"></a>GCD队列</h4><hr>
 <p><strong>队列与线程的关系</strong></p>
 <p>队列和线程并非拥有关系，队列是任务容器（一种数据结构），CPU从队列中取出任务，放到对应的线程上去执行。</p>
@@ -453,6 +453,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2019/09/02/Https安全机制的实现/" rel="prev" title="Https安全机制的实现">
+                Https安全机制的实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -520,7 +524,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -531,7 +535,7 @@
                 
                 <div class="site-state-item site-state-categories">
                   <a href="/categories/index.html">
-                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-count">3</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -542,7 +546,7 @@
                 
                 <div class="site-state-item site-state-tags">
                   <a href="/tags/index.html">
-                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
