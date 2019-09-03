@@ -100,26 +100,31 @@
 
 
   
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="AVPlayer," />
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Jim zhang&#39;s Blog">
-<meta property="og:url" content="https://domainz/github.io/archives/index.html">
+<meta name="description" content="主流APP的播放器都是基于AVPlayer用起来高效方便，本文主要记录一下，播放器开发过程中会遇到的问题。 PlayerPlayer设计成单例，包含avplayer、playLayer、assetLoader、当前的播放窗口以及播放、暂停、拖动等控制方法。另外定义回调的delegate包含了下载流和item状态相关供上层使用。  传入视频URL、播放窗口targetView（UIView）以及播放">
+<meta name="keywords" content="AVPlayer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于AVPlayer视频播放器的实现">
+<meta property="og:url" content="https://domainz/github.io/2019/09/02/基于AVPlayer视频播放器的实现/index.html">
 <meta property="og:site_name" content="Jim zhang&#39;s Blog">
+<meta property="og:description" content="主流APP的播放器都是基于AVPlayer用起来高效方便，本文主要记录一下，播放器开发过程中会遇到的问题。 PlayerPlayer设计成单例，包含avplayer、playLayer、assetLoader、当前的播放窗口以及播放、暂停、拖动等控制方法。另外定义回调的delegate包含了下载流和item状态相关供上层使用。  传入视频URL、播放窗口targetView（UIView）以及播放">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-03T02:10:41.320Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Jim zhang&#39;s Blog">
+<meta name="twitter:title" content="基于AVPlayer视频播放器的实现">
+<meta name="twitter:description" content="主流APP的播放器都是基于AVPlayer用起来高效方便，本文主要记录一下，播放器开发过程中会遇到的问题。 PlayerPlayer设计成单例，包含avplayer、playLayer、assetLoader、当前的播放窗口以及播放、暂停、拖动等控制方法。另外定义回调的delegate包含了下载流和item状态相关供上层使用。  传入视频URL、播放窗口targetView（UIView）以及播放">
 
 
 
 
 
 
-  <link rel="canonical" href="https://domainz/github.io/archives/"/>
+  <link rel="canonical" href="https://domainz/github.io/2019/09/02/基于AVPlayer视频播放器的实现/"/>
 
 
-  <title>归档 | Jim zhang's Blog</title>
+  <title>基于AVPlayer视频播放器的实现 | Jim zhang's Blog</title>
   
 
 
@@ -166,7 +171,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -250,381 +255,191 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
 
-      
-      <span class="archive-page-counter">
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://domainz/github.io/2019/09/02/基于AVPlayer视频播放器的实现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jim zhang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/webImage/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jim zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline">基于AVPlayer视频播放器的实现</h1>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-02T17:33:22+08:00">2019-09-02</time>
+            
+
+            
+            
+
+            
+          </span>
+
           
-        
-        嗯..! 目前共计 9 篇日志。 继续努力。
-      </span>
-      
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/音视频/" itemprop="url" rel="index"><span itemprop="name">音视频</span></a></span>
 
-      
-
-        
-        
-        
-
-        
+                
+                
+              
+            </span>
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2019">2019</h1>
-          </div>
-        
-        
 
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/09/03/iOS之runtime总结/" itemprop="url">
-              
-                <span itemprop="name">iOS之Runtime相关</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-09-03T10:23:36+08:00"
-              content="2019-09-03" >
-          09-03
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/09/02/基于AVPlayer视频播放器的实现/" itemprop="url">
-              
-                <span itemprop="name">基于AVPlayer视频播放器的实现</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-09-02T17:33:22+08:00"
-              content="2019-09-02" >
-          09-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/09/02/Https安全机制的实现/" itemprop="url">
-              
-                <span itemprop="name">Https安全机制的实现</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-09-02T14:12:16+08:00"
-              content="2019-09-02" >
-          09-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/08/30/iOS之GCD/" itemprop="url">
-              
-                <span itemprop="name">OC之GCD</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-08-30T15:24:16+08:00"
-              content="2019-08-30" >
-          08-30
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2018">2018</h1>
-          </div>
-        
-        
+            
+          
 
-        
+          
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/03/06/iOS之CoreText/" itemprop="url">
-              
-                <span itemprop="name">iOS之CoreText</span>
-              
-            </a>
-        
-      </h2>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-03-06T10:17:04+08:00"
-              content="2018-03-06" >
-          03-06
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+        </div>
+      </header>
+    
 
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/03/02/iOS之CAAnimation/" itemprop="url">
-              
-                <span itemprop="name">iOS之CAAnimation</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-03-02T18:53:26+08:00"
-              content="2018-03-02" >
-          03-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/02/05/iOS之Block/" itemprop="url">
-              
-                <span itemprop="name">OC之Block</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-02-05T16:05:29+08:00"
-              content="2018-02-05" >
-          02-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <p>主流APP的播放器都是基于AVPlayer用起来高效方便，本文主要记录一下，播放器开发过程中会遇到的问题。</p>
+<h3 id="Player"><a href="#Player" class="headerlink" title="Player"></a>Player</h3><p>Player设计成单例，包含avplayer、playLayer、assetLoader、当前的播放窗口以及播放、暂停、拖动等控制方法。另外定义回调的delegate包含了下载流和item状态相关供上层使用。</p>
+<ol>
+<li>传入视频URL、播放窗口targetView（UIView）以及播放位置second，检查缓存是否有文件；</li>
+<li>如果不存在，切换URL的scheme（不切换的话不会走assetLoader）。把之前的asset（AVURLAsset）停掉销毁。创建新的asset，并且给asset设置assetLoader（AVAssetResourceLoader），并且设置assetLoader的delegate为自己。如果播放器有截图的需求，要自定义output（AVPlayerItemVideoOutput）替换掉原来的。</li>
+<li>[targetView.layer addSublayer:self.playerLayer];</li>
+<li>[self playAtSecond:second];</li>
+</ol>
+<h3 id="AssetLoader"><a href="#AssetLoader" class="headerlink" title="AssetLoader"></a>AssetLoader</h3><p>边下边播的需要实现AVAssetResourceLoaderDelegate协议，这里需要实现好缓存策略，如果有下载一半的文件要设置好http header的Range参数防止从头开始下载。为了尽可能的保证列表流畅NSURLConnection的保持在后台queen要注意多线程死锁崩溃。connecetion的重试和报错回调逻辑，比如不能出错就回调，至少要等到缓存播放到不能播再回调。</p>
+<ol>
+<li>初始化存放视频请求Header的cache（设置好过期时间防止挤压太多这里用YYMemoryCache），以及NSOperationQueue；</li>
+<li>在resourceLoader:shouldWaitForLoadingOfRequestedResource:方法中初始化connection，这里的url需要把scheme替换回去。然后用数组保存传入的request对象，数据加载好之后把这些request finish掉；</li>
+</ol>
+<p>…未完待续</p>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/02/02/iOS之Runloop/" itemprop="url">
-              
-                <span itemprop="name">iOS之Runloop</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-02-02T17:43:45+08:00"
-              content="2018-02-02" >
-          02-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/01/24/要想写博客，先要学会MarkDown/" itemprop="url">
-              
-                <span itemprop="name">MarkDown && Hexo</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-24T17:38:42+08:00"
-              content="2018-01-24" >
-          01-24
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/AVPlayer/" rel="tag"># AVPlayer</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/02/Https安全机制的实现/" rel="next" title="Https安全机制的实现">
+                <i class="fa fa-chevron-left"></i> Https安全机制的实现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/03/iOS之runtime总结/" rel="prev" title="iOS之Runtime相关">
+                iOS之Runtime相关 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
           
+
+  
+
+
 
         </div>
         
@@ -847,6 +662,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.2"></script>
+
+
 
   
 

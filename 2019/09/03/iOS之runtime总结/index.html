@@ -100,33 +100,34 @@
 
 
   
-  <meta name="keywords" content="iOS动画," />
+  <meta name="keywords" content="runtime," />
 
 
-<meta name="description" content="UIView, CALayer, CAAnimation，CATransication等； 呈现树模型树以及同步 CAAnimation是加载view.layer.presentationlayer上，而不会更新到view.layer.modellayer; UIView和UIView的自带layer的属性实际上是对应的是CALayer的modellayer，presentationlayer和m">
-<meta name="keywords" content="iOS动画">
+<meta name="description" content="Runtime常见概念类类的结构类对象(Class)是由程序员定义并在运行时由编译器创建的，它没有自己的实例变量，这里需要注意的是类的成员变量和实例方法列表是属于实例对象的，但其存储于类对象当中的。 typedef struct objc_class *Class;  struct objc_class {     Class _Nonnull isa  OBJC_ISA_AVAILABILITY">
+<meta name="keywords" content="runtime">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS之CAAnimation">
-<meta property="og:url" content="https://domainz/github.io/2018/03/02/iOS之CAAnimation/index.html">
+<meta property="og:title" content="iOS之Runtime相关">
+<meta property="og:url" content="https://domainz/github.io/2019/09/03/iOS之runtime总结/index.html">
 <meta property="og:site_name" content="Jim zhang&#39;s Blog">
-<meta property="og:description" content="UIView, CALayer, CAAnimation，CATransication等； 呈现树模型树以及同步 CAAnimation是加载view.layer.presentationlayer上，而不会更新到view.layer.modellayer; UIView和UIView的自带layer的属性实际上是对应的是CALayer的modellayer，presentationlayer和m">
+<meta property="og:description" content="Runtime常见概念类类的结构类对象(Class)是由程序员定义并在运行时由编译器创建的，它没有自己的实例变量，这里需要注意的是类的成员变量和实例方法列表是属于实例对象的，但其存储于类对象当中的。 typedef struct objc_class *Class;  struct objc_class {     Class _Nonnull isa  OBJC_ISA_AVAILABILITY">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://domainz/2018/03/02/iOS之CAAnimation/mediatiming.jpeg">
-<meta property="og:updated_time" content="2019-09-02T03:31:43.956Z">
+<meta property="og:image" content="https://domainz/2019/09/03/iOS之runtime总结/isa.png">
+<meta property="og:image" content="https://domainz/2019/09/03/iOS之runtime总结/msg_forwarding.png">
+<meta property="og:updated_time" content="2019-09-03T04:42:41.566Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS之CAAnimation">
-<meta name="twitter:description" content="UIView, CALayer, CAAnimation，CATransication等； 呈现树模型树以及同步 CAAnimation是加载view.layer.presentationlayer上，而不会更新到view.layer.modellayer; UIView和UIView的自带layer的属性实际上是对应的是CALayer的modellayer，presentationlayer和m">
-<meta name="twitter:image" content="https://domainz/2018/03/02/iOS之CAAnimation/mediatiming.jpeg">
+<meta name="twitter:title" content="iOS之Runtime相关">
+<meta name="twitter:description" content="Runtime常见概念类类的结构类对象(Class)是由程序员定义并在运行时由编译器创建的，它没有自己的实例变量，这里需要注意的是类的成员变量和实例方法列表是属于实例对象的，但其存储于类对象当中的。 typedef struct objc_class *Class;  struct objc_class {     Class _Nonnull isa  OBJC_ISA_AVAILABILITY">
+<meta name="twitter:image" content="https://domainz/2019/09/03/iOS之runtime总结/isa.png">
 
 
 
 
 
 
-  <link rel="canonical" href="https://domainz/github.io/2018/03/02/iOS之CAAnimation/"/>
+  <link rel="canonical" href="https://domainz/github.io/2019/09/03/iOS之runtime总结/"/>
 
 
-  <title>iOS之CAAnimation | Jim zhang's Blog</title>
+  <title>iOS之Runtime相关 | Jim zhang's Blog</title>
   
 
 
@@ -273,7 +274,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://domainz/github.io/2018/03/02/iOS之CAAnimation/">
+    <link itemprop="mainEntityOfPage" href="https://domainz/github.io/2019/09/03/iOS之runtime总结/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jim zhang">
@@ -290,7 +291,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">iOS之CAAnimation</h1>
+          <h1 class="post-title" itemprop="name headline">iOS之Runtime相关</h1>
         
 
         <div class="post-meta">
@@ -302,7 +303,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-02T18:53:26+08:00">2018-03-02</time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-03T10:23:36+08:00">2019-09-03</time>
             
 
             
@@ -357,22 +358,102 @@
       
 
       
-        <p>UIView, CALayer, CAAnimation，CATransication等；</p>
-<h3 id="呈现树模型树以及同步"><a href="#呈现树模型树以及同步" class="headerlink" title="呈现树模型树以及同步"></a>呈现树模型树以及同步</h3><ul>
-<li>CAAnimation是加载view.layer.presentationlayer上，而不会更新到view.layer.modellayer;</li>
-<li>UIView和UIView的自带layer的属性实际上是对应的是CALayer的modellayer，presentationlayer和modellayer存在同步的关系；</li>
-<li>任意时刻如果CAAnimation加到view.layer上，presentationlayer优先从CAAnimation取状态要怎么刷新，动画做完将回归到modellayer的状态；</li>
-<li>可以使用CADisplaylink定时器，中取view.layer.presentationlayer的bounds，positon，transform等信息同步到uiview的layer上（modellayer）；</li>
+        <h3 id="Runtime常见概念"><a href="#Runtime常见概念" class="headerlink" title="Runtime常见概念"></a>Runtime常见概念</h3><h4 id="类"><a href="#类" class="headerlink" title="类"></a>类</h4><h5 id="类的结构"><a href="#类的结构" class="headerlink" title="类的结构"></a>类的结构</h5><p>类对象(Class)是由程序员定义并在运行时由编译器创建的，它没有自己的实例变量，这里需要注意的是类的成员变量和实例方法列表是属于实例对象的，但其存储于类对象当中的。</p>
+<pre><code>typedef struct objc_class *Class;
+
+struct objc_class {
+    Class _Nonnull isa  OBJC_ISA_AVAILABILITY;
+
+    #if !__OBJC2__
+
+    Class _Nullable super_class OBJC2_UNAVAILABLE;
+    const char * _Nonnull name OBJC2_UNAVAILABLE;
+    long version OBJC2_UNAVAILABLE;
+    long info OBJC2_UNAVAILABLE;
+    long instance_size OBJC2_UNAVAILABLE;
+    struct objc_ivar_list * _Nullable ivars OBJC2_UNAVAILABLE;
+    struct objc_method_list * _Nullable * _Nullable methodLists OBJC2_UNAVAILABLE;
+    struct objc_cache * _Nonnull cache OBJC2_UNAVAILABLE;
+    struct objc_protocol_list * _Nullable protocols OBJC2_UNAVAILABLE;
+
+    #endif
+
+} OBJC2_UNAVAILABLE;
+</code></pre><img src="/2019/09/03/iOS之runtime总结/isa.png" title="isa">
+<ul>
+<li>isa：简而言之就是<strong>Objc对象的isa指针指向的是类对象</strong>。类对象包含isa和superclass指针，它们的isa指向的是metaclass，它们的superclass指向父类。metaclass的isa指向它的基类；</li>
+<li>cache：用于缓存最近使用的方法。一个接收者对象接收到一个消息时，它会根据isa指针去查找能够响应这个消息的对象。在实际使用中，这个对象只有一部分方法是常用的，很多方法其实很少用或者根本用不上。这种情况下，如果每次消息来时，我们都是methodLists中遍历一遍，性能势必很差。这时，cache就派上用场了。在我们每次调用过一个方法后，这个方法就会被缓存到cache列表中，下次调用的时候runtime就会优先去cache中查找，如果cache没有，才去methodLists中查找方法。这样，对于那些经常用到的方法的调用，但提高了调用的效率。</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">[CATransaction setAnimationDuration:0.25];</span><br><span class="line">[CATransaction setCompletionBlock:^&#123;</span><br><span class="line">	[self stopDisplayLink];</span><br><span class="line">&#125;];</span><br><span class="line">[CATransaction begin];</span><br><span class="line">[self.videoView.layer addAnimation:group forKey:@&quot;showAnimation&quot;];</span><br><span class="line">[CATransaction commit];</span><br><span class="line">[self startDisplayLink];</span><br><span class="line"> </span><br><span class="line"> - (void)startDisplayLink</span><br><span class="line">&#123;</span><br><span class="line">    self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(handleDisplayLink:)];</span><br><span class="line">    [self.displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)syncLayer</span><br><span class="line">&#123;</span><br><span class="line">    CALayer *presentationLayer = self.videoView.layer.presentationLayer;</span><br><span class="line">    self.videoView.bounds = presentationLayer.bounds;</span><br><span class="line">    self.videoView.center = presentationLayer.position;</span><br><span class="line">    self.videoView.layer.transform = presentationLayer.transform;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)stopDisplayLink</span><br><span class="line">&#123;</span><br><span class="line">    [self syncLayer];</span><br><span class="line">    [self.displayLink invalidate];</span><br><span class="line">    self.displayLink = nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)handleDisplayLink:(CADisplayLink *)displayLink</span><br><span class="line">&#123;</span><br><span class="line">    [self syncLayer];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="UIView的block动画"><a href="#UIView的block动画" class="headerlink" title="UIView的block动画"></a>UIView的block动画</h3><ul>
-<li>对CALayer的animatable属性赋值的时候，会对CALayer的delegate调用[actionForLayer:forKey:]，如果该方法返回nil，则展示默认的动画，如果返回NSNull则不走动画，如果返回一个实现了CAAction协议的对象（例如CABasicAnimtion）则会走这个返回的动画；</li>
-<li>如果设置Layer的animatable方法调用在uiview animation的block里面，则会返回一个CAAnimation<caaction>；<br>UIView的自带layer的delegate是自己，如果不在block里面设置的话，就返回nsnull就不会动了，如果直接加在layer上就返回nil显示隐式动画；</caaction></li>
+<h5 id="获取类名"><a href="#获取类名" class="headerlink" title="获取类名"></a>获取类名</h5><pre><code>const char * class_getName ( Class cls ); 
+</code></pre><h5 id="动态创建类"><a href="#动态创建类" class="headerlink" title="动态创建类"></a>动态创建类</h5><pre><code>// 创建一个新类和元类
+Class objc_allocateClassPair ( Class superclass, const char *name, size_t extraBytes ); //如果创建的是root class，则superclass为Nil。extraBytes通常为0
+
+// 销毁一个类及其相关联的类
+void objc_disposeClassPair ( Class cls ); //在运行中还存在或存在子类实例，就不能够调用这个。
+
+// 在应用中注册由objc_allocateClassPair创建的类
+void objc_registerClassPair ( Class cls ); //创建了新类后，然后使用class_addMethod，class_addIvar函数为新类添加方法，实例变量和属性后再调用这个来注册类，再之后就能够用了。
+</code></pre><h4 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h4><p>实例对象是我们对类对象alloc或者new操作时所创建的，在这个过程中会拷贝实例所属的类的成员变量，但并不拷贝类定义的方法。对象最重要的是可以给其发送消息，调用实例方法时，系统会根据实例的isa指针去类的方法列表及父类的方法列表中寻找与消息对应的selector指向的方法。</p>
+<pre><code>/// Represents an instance of a class.
+struct objc_object {
+    Class _Nonnull isa  OBJC_ISA_AVAILABILITY;
+};
+</code></pre><h5 id="对对象的类操作"><a href="#对对象的类操作" class="headerlink" title="对对象的类操作"></a>对对象的类操作</h5><pre><code>// 返回给定对象的类名
+const char * object_getClassName ( id obj );
+// 返回对象的类
+Class object_getClass ( id obj );
+// 设置对象的类
+Class object_setClass ( id obj, Class cls );
+</code></pre><h5 id="获取对象的类定义"><a href="#获取对象的类定义" class="headerlink" title="获取对象的类定义"></a>获取对象的类定义</h5><pre><code>// 获取已注册的类定义的列表
+int objc_getClassList ( Class *buffer, int bufferCount );
+
+// 创建并返回一个指向所有已注册类的指针列表
+Class * objc_copyClassList ( unsigned int *outCount );
+
+// 返回指定类的类定义
+Class objc_lookUpClass ( const char *name );
+Class objc_getClass ( const char *name );
+Class objc_getRequiredClass ( const char *name );
+
+// 返回指定类的元类
+Class objc_getMetaClass ( const char *name );
+</code></pre><h5 id="动态创建对象"><a href="#动态创建对象" class="headerlink" title="动态创建对象"></a>动态创建对象</h5><pre><code>// 创建类实例
+id class_createInstance ( Class cls, size_t extraBytes ); //会在heap里给类分配内存。这个方法和+alloc方法类似。
+
+// 在指定位置创建类实例
+id objc_constructInstance ( Class cls, void *bytes ); 
+
+// 销毁类实例
+void * objc_destructInstance ( id obj ); //不会释放移除任何相关引用
+</code></pre><h4 id="Metaclass"><a href="#Metaclass" class="headerlink" title="Metaclass"></a>Metaclass</h4><p>元类(Metaclass)就是类对象的类，每个类都有自己的元类，也就是objc_class结构体里面isa指针所指向的类. Objective-C的类方法是使用元类的根本原因，因为其中存储着对应的类对象调用的方法即<strong>类方法</strong>。</p>
+<h4 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h4><p>在Objective-C中，属性(property)和成员变量是不同的。那么，属性的本质是什么？它和成员变量之间有什么区别？简单来说属性是添加了存取方法的成员变量，也就是:</p>
+<pre><code>@property = ivar + getter + setter;
+</code></pre><h3 id="消息转发"><a href="#消息转发" class="headerlink" title="消息转发"></a>消息转发</h3><h4 id="objc-msgSend"><a href="#objc-msgSend" class="headerlink" title="objc_msgSend"></a>objc_msgSend</h4><pre><code>[array insertObject:foo atIndex:5];
+// 等价
+objc_msgSend(array, @selector(insertObject:atIndex:), foo, 5);    
+</code></pre><ol>
+<li>首先检查这个selector是不是要忽略;</li>
+<li>检测这个selector的target是不是nil，OC允许我们对一个nil对象执行任何方法不会Crash，因为运行时会被忽略掉;</li>
+<li>如果上面两步都通过了，就开始查找这个类的实现IMP，先从cache里查找，如果找到了就运行对应的函数去执行相应的代码;</li>
+<li>如果cache中没有找到就找类的方法列表中是否有对应的方法;</li>
+<li>如果类的方法列表中找不到就到父类的方法列表中查找，一直找到NSObject类为止;</li>
+<li>如果还是没找到就要开始进入动态方法解析和消息转发;</li>
+</ol>
+<h4 id="动态方法解析："><a href="#动态方法解析：" class="headerlink" title="动态方法解析："></a>动态方法解析：</h4><img src="/2019/09/03/iOS之runtime总结/msg_forwarding.png" title="msg_forwarding">
+<p>没有方法的实现，程序会在运行时挂掉并抛出 unrecognized selector sent to … 的异常。但在异常抛出前，Objective-C 的运行时会给你三次拯救程序的机会：</p>
+<ul>
+<li>Method resolution</li>
+<li>Fast forwarding</li>
+<li>Normal forwarding</li>
 </ul>
-<h3 id="CAMediaTiming"><a href="#CAMediaTiming" class="headerlink" title="CAMediaTiming"></a>CAMediaTiming</h3><ul>
-<li>CAAnimation除了实现CAAction协议还实现了CAMediaTiming协议，主要提供控制动画过程需要的各种参数和动画模式；</li>
-</ul>
-<img src="/2018/03/02/iOS之CAAnimation/mediatiming.jpeg" title="mediatiming">
+<ol>
+<li>Runtime 发送 +resolveInstanceMethod: 或者 +resolveClassMethod: 尝试去 resolve 这个消息；</li>
+<li>如果 resolve 方法返回 NO，Runtime 就发送 -forwardingTargetForSelector: 允许你把这个消息转发给另一个对象；</li>
+<li>如果没有新的目标对象返回， Runtime 就会发送-methodSignatureForSelector: 和 -forwardInvocation: 消息。你可以发送 -invokeWithTarget: 消息来手动转发消息或者发送 -doesNotRecognizeSelector: 抛出异常。</li>
+</ol>
+<p>应用：防止程序崩溃机制；</p>
+<h4 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h4><p>Associate用来给instance加变量的方式，Method swizzling实现hook（插入编程），自实现block型kvo和notificationcenter。</p>
+
       
     </div>
     
@@ -389,7 +470,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/iOS动画/" rel="tag"># iOS动画</a>
+            <a href="/tags/runtime/" rel="tag"># runtime</a>
           
         </div>
       
@@ -402,8 +483,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/02/05/iOS之Block/" rel="next" title="OC之Block">
-                <i class="fa fa-chevron-left"></i> OC之Block
+              <a href="/2019/09/02/基于AVPlayer视频播放器的实现/" rel="next" title="基于AVPlayer视频播放器的实现">
+                <i class="fa fa-chevron-left"></i> 基于AVPlayer视频播放器的实现
               </a>
             
           </div>
@@ -411,10 +492,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/03/06/iOS之CoreText/" rel="prev" title="iOS之CoreText">
-                iOS之CoreText <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
