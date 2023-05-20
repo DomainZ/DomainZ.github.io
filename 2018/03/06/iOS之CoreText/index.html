@@ -1,37 +1,744 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="CoreText," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="有时候用网页展示一大片图文效果不怎么好，这时候就有必要用CoreText框架实现页面渲染了； CoreText重要的几个元素 CTFramesetterRef CTFrameRef CTLineRef CTRunRef  CTFrame 作为一个整体的画布(Canvas)，其中由行(CTLine)组成，而每行可以分为一个或多个小方块（CTRun）。   一般流程 使用core text就是先有一个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS之CoreText">
+<meta property="og:url" content="https://domainz/github.io/2018/03/06/iOS%E4%B9%8BCoreText/index.html">
+<meta property="og:site_name" content="Jim zhang&#39;s Blog">
+<meta property="og:description" content="有时候用网页展示一大片图文效果不怎么好，这时候就有必要用CoreText框架实现页面渲染了； CoreText重要的几个元素 CTFramesetterRef CTFrameRef CTLineRef CTRunRef  CTFrame 作为一个整体的画布(Canvas)，其中由行(CTLine)组成，而每行可以分为一个或多个小方块（CTRun）。   一般流程 使用core text就是先有一个">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://domainz/2018/03/06/iOS%E4%B9%8BCoreText/1364027353_1537.png">
+<meta property="article:published_time" content="2018-03-06T02:17:04.000Z">
+<meta property="article:modified_time" content="2023-05-20T04:20:12.552Z">
+<meta property="article:author" content="Jim zhang">
+<meta property="article:tag" content="CoreText">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://domainz/2018/03/06/iOS%E4%B9%8BCoreText/1364027353_1537.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://domainz/github.io/2018/03/06/iOS之CoreText/"/>
+
+
+
+
+
+  <title>iOS之CoreText | Jim zhang's Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.0.0-rc1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jim zhang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just so so...</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://domainz/github.io/2018/03/06/iOS%E4%B9%8BCoreText/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jim zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS之CoreText</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-06T10:17:04+08:00">
+                2018-03-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>有时候用网页展示一大片图文效果不怎么好，这时候就有必要用CoreText框架实现页面渲染了；</p>
+<h4 id="CoreText重要的几个元素"><a href="#CoreText重要的几个元素" class="headerlink" title="CoreText重要的几个元素"></a>CoreText重要的几个元素</h4><ul>
+<li>CTFramesetterRef</li>
+<li>CTFrameRef</li>
+<li>CTLineRef</li>
+<li>CTRunRef</li>
+</ul>
+<p>CTFrame 作为一个整体的画布(Canvas)，其中由行(CTLine)组成，而每行可以分为一个或多个小方块（CTRun）。</p>
+<img src="/2018/03/06/iOS%E4%B9%8BCoreText/1364027353_1537.png" class="" title="1364027353_1537">
+
+<h4 id="一般流程"><a href="#一般流程" class="headerlink" title="一般流程"></a>一般流程</h4><hr>
+<p>使用core text就是先有一个要显示的string，然后定义这个string每个部分的样式－&gt;attributedString －&gt; 生成 CTFramesetter -&gt; 得到CTFrame -&gt; 绘制（CTFrameDraw）;</p>
+<h4 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h4><hr>
+<ol>
+<li>DisplayView继承子UIView，重写[drawRect:]方法。该方法通过传入的CTFrameRef，然后通过CTFrameDraw(self.data.ctFrame, context)就显示完毕;</li>
+<li>自定义一个Parser把接口数据转换成包含CTFrameRef的CoreTextData的对象，解析过程如下：<ul>
+<li>创建AttributeString，这一步最关键；</li>
+<li>根据AttributeString创建CTFramesetterRef实例；</li>
+<li>根据CTFramesetterRef获取绘制高度；</li>
+<li>根据CTFramesetterRef获取CTFrameRef；</li>
+<li>将生成好的CTFrameRef实例和计算好的绘制高度保存到CoreTextData实例中，最后返回CoreTextData实例；</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">+ (CoreTextData *)parseAttributedContent:(NSAttributedString *)content config:(CTFrameParserConfig*)config &#123;</span><br><span class="line">    // 创建CTFramesetterRef实例</span><br><span class="line">    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((CFAttributedStringRef)content);</span><br><span class="line">    </span><br><span class="line">    // 获得要绘制的区域的高度</span><br><span class="line">    CGSize restrictSize = CGSizeMake(config.width, CGFLOAT_MAX);</span><br><span class="line">    CGSize coreTextSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0,0), nil, restrictSize, nil);</span><br><span class="line">    CGFloat textHeight = coreTextSize.height;</span><br><span class="line">    // 生成CTFrameRef实例</span><br><span class="line">    CTFrameRef frame = [self createFrameWithFramesetter:framesetter config:config height:textHeight];</span><br><span class="line">    </span><br><span class="line">    // 将生成好的CTFrameRef实例和计算好的绘制高度保存到CoreTextData实例中，最后返回CoreTextData实例</span><br><span class="line">    CoreTextData *data = [[CoreTextData alloc] init];</span><br><span class="line">    data.ctFrame = frame;</span><br><span class="line">    data.height = textHeight;</span><br><span class="line">    data.content = content;</span><br><span class="line">    </span><br><span class="line">    // 释放内存</span><br><span class="line">    CFRelease(frame);</span><br><span class="line">    CFRelease(framesetter);</span><br><span class="line">    return data;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (CTFrameRef)createFrameWithFramesetter:(CTFramesetterRef)framesetter</span><br><span class="line">                                  config:(CTFrameParserConfig *)config</span><br><span class="line">                                  height:(CGFloat)height &#123;</span><br><span class="line">    CGMutablePathRef path = CGPathCreateMutable();</span><br><span class="line">    CGPathAddRect(path, NULL, CGRectMake(0, 0, config.width, height));</span><br><span class="line">    </span><br><span class="line">    CTFrameRef frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, NULL);</span><br><span class="line">    CFRelease(path);</span><br><span class="line">    return frame;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h4><hr>
+<p>如果光是文本确实没什么好说的，但是加入了图片、链接、选中、选中menu、点击图片手势等细节之后很多地方有点费劲；</p>
+<ul>
+<li>图片的填充，在生成Attributestr的时候，根据接口来的array数据遍历append；如果其中的一个元素是图片，就创建空白占位符，并且设置它的CTRunDelegate信息，如果给CTRun设置了CTRunDelegateRef属性框架，在渲染CTRun的时候会调用设置的delegate获取decent、ascent、width等信息用来绘制。FrameRef创建好之后，遍历FrameRef的line以及line中的run初始化imageData.imagePosition，在最终drawrect的时候调用CGContextDrawImage(context, imageData.imagePosition, image.CGImage)就能够显示图片；</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">static CGFloat ascentCallback(void *ref)&#123;</span><br><span class="line">    CGFloat picWidth = [[(__bridge NSDictionary *)ref objectForKey:@&quot;width&quot;] floatValue];</span><br><span class="line">    CGFloat picHeight = [[(__bridge NSDictionary *)ref objectForKey:@&quot;height&quot;] floatValue];</span><br><span class="line">    CGFloat height = defaultConfig.width/(picWidth/picHeight);</span><br><span class="line">    return height;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static CGFloat descentCallback(void *ref)&#123;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static CGFloat widthCallback(void* ref)&#123;</span><br><span class="line">    return defaultConfig.width;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (NSAttributedString *)parseImageDataFromNSDictionary:(NSDictionary *)dict</span><br><span class="line">                                                config:(CTFrameParserConfig*)config &#123;</span><br><span class="line">    CTRunDelegateCallbacks callbacks;</span><br><span class="line">    memset(&amp;callbacks, 0, sizeof(CTRunDelegateCallbacks));</span><br><span class="line">    callbacks.version = kCTRunDelegateVersion1;</span><br><span class="line">    callbacks.getAscent = ascentCallback;</span><br><span class="line">    callbacks.getDescent = descentCallback;</span><br><span class="line">    callbacks.getWidth = widthCallback;</span><br><span class="line">    CTRunDelegateRef delegate = CTRunDelegateCreate(&amp;callbacks, (__bridge void *)(dict));</span><br><span class="line">    </span><br><span class="line">    // 使用0xFFFC作为空白的占位符</span><br><span class="line">    unichar objectReplacementChar = 0xFFFC;</span><br><span class="line">    NSString * content = [NSString stringWithCharacters:&amp;objectReplacementChar length:1];</span><br><span class="line">    NSDictionary * attributes = [self attributesWithConfig:config withContentTypeStr:@&quot;pic&quot;];</span><br><span class="line">    NSMutableAttributedString * space = [[NSMutableAttributedString alloc] initWithString:content</span><br><span class="line">                                                                               attributes:attributes];</span><br><span class="line">    CFAttributedStringSetAttribute((CFMutableAttributedStringRef)space, CFRangeMake(0, 1),</span><br><span class="line">                                   kCTRunDelegateAttributeName, delegate);</span><br><span class="line">    CFRelease(delegate);</span><br><span class="line">    return space;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>通过上一步设置好占位符初始化好CTFrameRef之后，再遍历整个CTFrameRef的line，通过(NSArray *)CTLineGetGlyphRuns(line)获取每一行的CTRunDelegateRef，调用之前设置好的delegate方法，设置好image的显示的rect；</li>
+<li>CoreTextImageData的imagePosition属性; &#x2F;&#x2F; 此坐标是CoreText的坐标系，而不是UIKit的坐标系；</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">for (int i = 0; i &lt; lineCount; ++i) &#123;</span><br><span class="line">        if (imageData == nil) &#123;</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">        CTLineRef line = (__bridge CTLineRef)lines[i];</span><br><span class="line">        NSArray * runObjArray = (NSArray *)CTLineGetGlyphRuns(line);</span><br><span class="line">        for (id runObj in runObjArray) &#123;</span><br><span class="line">            CTRunRef run = (__bridge CTRunRef)runObj;</span><br><span class="line">            NSDictionary *runAttributes = (NSDictionary *)CTRunGetAttributes(run);</span><br><span class="line">            CTRunDelegateRef delegate = (__bridge CTRunDelegateRef)[runAttributes valueForKey:(id)kCTRunDelegateAttributeName];</span><br><span class="line">            if (delegate == nil) &#123;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            NSDictionary * metaDic = CTRunDelegateGetRefCon(delegate);</span><br><span class="line">            if (![metaDic isKindOfClass:[NSDictionary class]]) &#123;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            CGRect runBounds;</span><br><span class="line">            CGFloat ascent;</span><br><span class="line">            CGFloat descent;</span><br><span class="line">            runBounds.size.width = CTRunGetTypographicBounds(run, CFRangeMake(0, 0), &amp;ascent, &amp;descent, NULL);</span><br><span class="line">            runBounds.size.height = ascent + descent;</span><br><span class="line">            </span><br><span class="line">            CGFloat xOffset = CTLineGetOffsetForStringIndex(line, CTRunGetStringRange(run).location, NULL);</span><br><span class="line">            runBounds.origin.x = lineOrigins[i].x + xOffset;</span><br><span class="line">            runBounds.origin.y = lineOrigins[i].y;</span><br><span class="line">            runBounds.origin.y -= descent;</span><br><span class="line">            </span><br><span class="line">            CGPathRef pathRef = CTFrameGetPath(self.ctFrame);</span><br><span class="line">            CGRect colRect = CGPathGetBoundingBox(pathRef);</span><br><span class="line">            </span><br><span class="line">            CGRect delegateBounds = CGRectOffset(runBounds, colRect.origin.x, colRect.origin.y);</span><br><span class="line">            </span><br><span class="line">            imageData.imagePosition = delegateBounds;</span><br><span class="line">            imgIndex++;</span><br><span class="line">            if (imgIndex == self.imageArray.count) &#123;</span><br><span class="line">                imageData = nil;</span><br><span class="line">                break;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                imageData = self.imageArray[imgIndex];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CoreText/" rel="tag"># CoreText</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/02/iOS%E4%B9%8BCAAnimation/" rel="next" title="iOS之CAAnimation">
+                <i class="fa fa-chevron-left"></i> iOS之CAAnimation
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/30/iOS%E4%B9%8BGCD/" rel="prev" title="OC之GCD">
+                OC之GCD <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          </div>
+          
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#CoreText%E9%87%8D%E8%A6%81%E7%9A%84%E5%87%A0%E4%B8%AA%E5%85%83%E7%B4%A0"><span class="nav-number">1.</span> <span class="nav-text">CoreText重要的几个元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E8%88%AC%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">一般流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%86%E8%8A%82"><span class="nav-number">3.</span> <span class="nav-text">细节</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">4.</span> <span class="nav-text">注意事项</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jim zhang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

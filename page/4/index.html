@@ -1,23 +1,718 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
-{% block title %}{{ config.title }}{% if theme.index_with_subtitle and config.subtitle %} - {{config.subtitle }}{% endif %}{% endblock %}
 
-{% block page_class %}
-  {% if is_home() %}page-home{% endif -%}
-{% endblock %}
 
-{% block content %}
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Jim zhang&#39;s Blog">
+<meta property="og:url" content="https://domainz/github.io/page/4/index.html">
+<meta property="og:site_name" content="Jim zhang&#39;s Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="Jim zhang">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://domainz/github.io/page/4/"/>
+
+
+
+
+
+  <title>Jim zhang's Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.0.0-rc1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left 
+  page-home">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jim zhang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just so so...</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
   <section id="posts" class="posts-expand">
-    {% for post in page.posts %}
-      {{ post_template.render(post, true) }}
-    {% endfor %}
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://domainz/github.io/2018/01/24/%E8%A6%81%E6%83%B3%E5%86%99%E5%8D%9A%E5%AE%A2%EF%BC%8C%E5%85%88%E8%A6%81%E5%AD%A6%E4%BC%9AMarkDown/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jim zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/24/%E8%A6%81%E6%83%B3%E5%86%99%E5%8D%9A%E5%AE%A2%EF%BC%8C%E5%85%88%E8%A6%81%E5%AD%A6%E4%BC%9AMarkDown/" itemprop="url">MarkDown && Hexo</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-24T17:38:42+08:00">
+                2018-01-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Blog/" itemprop="url" rel="index">
+                    <span itemprop="name">Blog</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="大标题"><a href="#大标题" class="headerlink" title="大标题"></a>大标题</h2><h3 id="大标题下面有几个小标题"><a href="#大标题下面有几个小标题" class="headerlink" title="大标题下面有几个小标题"></a>大标题下面有几个小标题</h3><ol start="0">
+<li>如果要写1234的列表;</li>
+<li>如果说明的文字里面有链接<a href="https://baidu.com/">Server</a></li>
+<li>如果要突出文字，<strong>加粗</strong>、<em>斜体</em>，开始派上用场了;</li>
+<li>如果引用了一波；<blockquote>
+<p>这是引用</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="小标题一"><a href="#小标题一" class="headerlink" title="小标题一"></a>小标题一</h3><p>代码引用:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">UIView *shareBoardView = [[[NSBundle mainBundle] loadNibNamed:@&quot;QBDLShareBoardView&quot; owner:self options:nil] lastObject];</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="小标题二"><a href="#小标题二" class="headerlink" title="小标题二"></a>小标题二</h3><p>如果要放一张图片</p>
+<img src="/2018/01/24/%E8%A6%81%E6%83%B3%E5%86%99%E5%8D%9A%E5%AE%A2%EF%BC%8C%E5%85%88%E8%A6%81%E5%AD%A6%E4%BC%9AMarkDown/avatar.jpg" class="" title="This is an example image">
+
+<hr>
+<h2 id="配置-Hexo-博客"><a href="#配置-Hexo-博客" class="headerlink" title="配置 Hexo 博客"></a>配置 Hexo 博客</h2><p><a href="https://hexo.io/zh-cn/docs/">hexo官方文档</a></p>
+<p>按照以下几个步骤配置 Hexo 博客：</p>
+<h2 id="1-安装-Node-js-和-Git"><a href="#1-安装-Node-js-和-Git" class="headerlink" title="1. 安装 Node.js 和 Git"></a>1. 安装 Node.js 和 Git</h2><p>Hexo 是基于 Node.js 构建的，因此首先需要安装 Node.js。请访问 <a href="https://nodejs.org/">Node.js 官网</a> 下载并安装适合您操作系统的 Node.js 版本。</p>
+<p>同时，Hexo 使用 Git 进行版本控制，所以请确保您的电脑上已经安装了 Git。如果没有，请访问 <a href="https://git-scm.com/">Git 官网</a> 下载并安装。</p>
+<h2 id="2-安装-Hexo"><a href="#2-安装-Hexo" class="headerlink" title="2. 安装 Hexo"></a>2. 安装 Hexo</h2><p>打开命令行工具，执行以下命令以全局安装 Hexo：</p>
+<p>bash<br>npm install -g hexo-cli</p>
+<h2 id="3-初始化-Hexo-博客"><a href="#3-初始化-Hexo-博客" class="headerlink" title="3. 初始化 Hexo 博客"></a>3. 初始化 Hexo 博客</h2><p>创建一个新的文件夹，用于存放您的博客项目。然后在命令行中进入该文件夹，并执行以下命令以初始化 Hexo 博客：</p>
+<p>bash<br>hexo init</p>
+<img src="/2018/01/24/%E8%A6%81%E6%83%B3%E5%86%99%E5%8D%9A%E5%AE%A2%EF%BC%8C%E5%85%88%E8%A6%81%E5%AD%A6%E4%BC%9AMarkDown/hexo_dir.jpg" class="" title="This is an dir info">
+
+<p>这将会在当前文件夹中生成 Hexo 的基本文件结构。接下来，执行以下命令以安装项目依赖，如果你换了电脑check out hexo的文件后直接在文件夹更新依赖：</p>
+<p>bash<br>npm install</p>
+<h2 id="4-配置博客"><a href="#4-配置博客" class="headerlink" title="4. 配置博客"></a>4. 配置博客</h2><p>配置文件位于项目根目录下的 <code>_config.yml</code> 文件。您可以根据需要修改该文件以配置您的博客。以下是一些常见的配置选项：</p>
+<ul>
+<li><code>title</code>: 博客的标题</li>
+<li><code>subtitle</code>: 博客的副标题</li>
+<li><code>description</code>: 博客的描述</li>
+<li><code>author</code>: 作者的名字</li>
+<li><code>language</code>: 博客的语言</li>
+<li><code>timezone</code>: 时区</li>
+</ul>
+<h2 id="5-写博客文章"><a href="#5-写博客文章" class="headerlink" title="5. 写博客文章"></a>5. 写博客文章</h2><p>在 <code>source/_posts</code> 文件夹下创建一个新的 Markdown 文件，例如 <code>hello-world.md</code>。在该文件中，您可以开始编写您的博客文章。文章的元数据（例如标题、日期、标签等）可以放在文件的 Front-matter 部分。</p>
+<p>例如：</p>
+<h2 id="markdown"><a href="#markdown" class="headerlink" title="markdown"></a>markdown</h2><h2 id="title-Hello-Worlddate-2019-05-20tags-示例-教程"><a href="#title-Hello-Worlddate-2019-05-20tags-示例-教程" class="headerlink" title="title: Hello Worlddate: 2019-05-20tags:- 示例- 教程"></a>title: Hello World<br>date: 2019-05-20<br>tags:<br>- 示例<br>- 教程</h2><p>这是我的第一篇 Hexo 博客文章。</p>
+<h2 id="6-预览博客"><a href="#6-预览博客" class="headerlink" title="6. 预览博客"></a>6. 预览博客</h2><p>为了预览您的博客，执行以下命令以启动本地服务器：</p>
+<p>bash<br>hexo server</p>
+<p>然后在浏览器中访问 <code>http://localhost:4000</code> 即可查看您的博客。</p>
+<h2 id="7-生成静态文件"><a href="#7-生成静态文件" class="headerlink" title="7. 生成静态文件"></a>7. 生成静态文件</h2><p>当您想要部署您的博客时，需要先生成静态文件。执行以下命令以生成静态文件：</p>
+<p>bash<br>hexo generate</p>
+<p>这将会在 <code>public</code> 文件夹下生成静态文件。</p>
+<h2 id="8-部署博客"><a href="#8-部署博客" class="headerlink" title="8. 部署博客"></a>8. 部署博客</h2><p>您可以将生成的静态文件部署到各种托管平台，例如 GitHub Pages、GitLab Pages、Netlify 等。在 <code>_config.yml</code> 文件中，您可以配置部署相关的选项。例如，以下配置表示使用 GitHub Pages 进行部署：<br>我自己是注册了一个新的github账号（domainz），设置了github pages</p>
+<p>yaml<br>deploy:<br>  type: git<br>  repo: <a href="mailto:&#x67;&#x69;&#x74;&#64;&#x67;&#x69;&#x74;&#104;&#117;&#98;&#x2e;&#x63;&#111;&#x6d;">&#x67;&#x69;&#x74;&#64;&#x67;&#x69;&#x74;&#104;&#117;&#98;&#x2e;&#x63;&#111;&#x6d;</a>:yourusername&#x2F;yourusername.github.io.git<br>  branch: main</p>
+<p>然后在命令行中执行以下命令以部署博客：</p>
+<p>bash<br>hexo deploy</p>
+<p>前提是已经把本机密钥配置上去了<br>cat ~&#x2F;.ssh&#x2F;id_rsa.pub<br>ssh-keygen -t rsa -C “<a href="mailto:&#121;&#111;&#x75;&#114;&#101;&#x6d;&#97;&#105;&#108;&#64;&#101;&#120;&#97;&#x6d;&#112;&#108;&#101;&#46;&#99;&#111;&#x6d;">&#121;&#111;&#x75;&#114;&#101;&#x6d;&#97;&#105;&#108;&#64;&#101;&#120;&#97;&#x6d;&#112;&#108;&#101;&#46;&#99;&#111;&#x6d;</a>“<br>执行 <code>cat ~/.ssh/id_rsa.pub</code>，复制输出的字符串。然后登录到托管平台，找到 SSH 密钥的设置页面（如 GitHub 的 <a href="https://github.com/settings/keys">SSH and GPG keys</a>），并将刚刚复制的字符串粘贴到这里。</p>
+<p>以上就是配置 Hexo 博客的基本步骤。</p>
+<p>更多关于 Hexo 的教程和扩展功能，您可以参考 <a href="https://hexo.io/docs/">Hexo 官方文档</a>。</p>
+<h2 id="9-其他记录"><a href="#9-其他记录" class="headerlink" title="9. 其他记录"></a>9. 其他记录</h2><ol start="0">
+<li>hexo new post “blog title”</li>
+<li>hexo g	&#x2F;&#x2F;生成</li>
+<li>hexo s	&#x2F;&#x2F;本地服务器运行，通过localhost访问</li>
+<li>hexo d	&#x2F;&#x2F;部署</li>
+</ol>
+<p>通过以下初始化归档和分类目录</p>
+<ol start="0">
+<li>hexo new page “categories”</li>
+<li>hexo new page “tags” </li>
+<li>打开 categories 文件夹下的 index.md ，在最下面一行加一行文字就行，注意中间有空格。type: categories;</li>
+<li>打开 tags 文件夹下的 index.md ，在最下面一行加一行文字就行，注意中间有空格。type: tags;</li>
+</ol>
+<p>通过配置_config.yml的excerpt设置文章的展开全文<br>0._config.yml–&gt; excerpt &#x3D; true</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
-  {% include '_partials/pagination.swig' %}
-{% endblock %}
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/3/">&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+  </nav>
 
-{% block sidebar %}
-  {{ sidebar_template.render(false) }}
-{% endblock %}
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jim zhang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
