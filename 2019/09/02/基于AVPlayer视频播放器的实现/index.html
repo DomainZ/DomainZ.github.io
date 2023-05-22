@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>基于AVPlayer视频播放器的实现 | Jim zhang's Blog</title><meta name="author" content="Jim zhang"><meta name="copyright" content="Jim zhang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="主流APP的播放器都是基于AVPlayer用起来高效方便，本文主要记录一下，播放器开发过程中会遇到的问题。 PlayerPlayer设计成单例，包含avplayer、playLayer、assetLoader、当前的播放窗口以及播放、暂停、拖动等控制方法。另外定义回调的delegate包含了下载流和item状态相关供上层使用。  传入视频URL、播放窗口targetView（UIView）以及播放">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>基于AVPlayer视频播放器的实现 | Jim zhang's Blog</title><meta name="author" content="Jim zhang"><meta name="copyright" content="Jim zhang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="主流APP的播放器都是基于AVPlayer用起来高效方便，本文主要记录一下，播放器开发过程中会遇到的问题。 PlayerPlayer设计成单例，包含avplayer、playLayer、assetLoader、当前的播放窗口以及播放、暂停、拖动等控制方法。另外定义回调的delegate包含了下载流和item状态相关供上层使用。  传入视频URL、播放窗口targetView（UIView）以及播放">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基于AVPlayer视频播放器的实现">
 <meta property="og:url" content="https://domainz/github.io/2019/09/02/%E5%9F%BA%E4%BA%8EAVPlayer%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/index.html">
@@ -139,7 +139,7 @@
       win.activateLightMode = function () {
         document.documentElement.setAttribute('data-theme', 'light')
         if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
         }
       }
       const t = saveToLocal.get('theme')

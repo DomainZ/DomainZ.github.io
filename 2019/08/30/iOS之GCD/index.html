@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>OC之GCD | Jim zhang's Blog</title><meta name="author" content="Jim zhang"><meta name="copyright" content="Jim zhang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="什么是GCD?GCD（Grand Central Dispatch）是异步执行任务的技术之一（iOS中其他多线程技术：pthread、NSThread、NSOperation）。开发者只需要定义想要执行的任务并追加到适当的Dispatch Quue中，GCD就能生成必要的线程并执行，通过GCD提供的系统级线程管理可以提高执行效率。 GCD队列 队列与线程的关系 队列和线程并非拥有关系，队列是任务容">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>OC之GCD | Jim zhang's Blog</title><meta name="author" content="Jim zhang"><meta name="copyright" content="Jim zhang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="什么是GCD?GCD（Grand Central Dispatch）是异步执行任务的技术之一（iOS中其他多线程技术：pthread、NSThread、NSOperation）。开发者只需要定义想要执行的任务并追加到适当的Dispatch Quue中，GCD就能生成必要的线程并执行，通过GCD提供的系统级线程管理可以提高执行效率。 GCD队列 队列与线程的关系 队列和线程并非拥有关系，队列是任务容">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OC之GCD">
 <meta property="og:url" content="https://domainz/github.io/2019/08/30/iOS%E4%B9%8BGCD/index.html">
@@ -139,7 +139,7 @@
       win.activateLightMode = function () {
         document.documentElement.setAttribute('data-theme', 'light')
         if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
         }
       }
       const t = saveToLocal.get('theme')

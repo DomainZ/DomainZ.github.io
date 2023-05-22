@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Https安全机制的实现 | Jim zhang's Blog</title><meta name="author" content="Jim zhang"><meta name="copyright" content="Jim zhang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本文记录HTTPS简要原理，实现过程以及iOS上如何对证书进行验证。 HTTPSHTTPS是运行在TLS&#x2F;SSL之上的HTTP，与普通的HTTP相比，在数据传输的安全性上有很大的提升。在传输数据之前有一个协商生成密钥（session key）的过程，这个密钥用来随后传递数据的时候对数据的加密与解密。 生成密钥的操作是如何做到安全的？简单的来说，采用的非对称加密的方式。server端发送给">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Https安全机制的实现 | Jim zhang's Blog</title><meta name="author" content="Jim zhang"><meta name="copyright" content="Jim zhang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="本文记录HTTPS简要原理，实现过程以及iOS上如何对证书进行验证。 HTTPSHTTPS是运行在TLS&#x2F;SSL之上的HTTP，与普通的HTTP相比，在数据传输的安全性上有很大的提升。在传输数据之前有一个协商生成密钥（session key）的过程，这个密钥用来随后传递数据的时候对数据的加密与解密。 生成密钥的操作是如何做到安全的？简单的来说，采用的非对称加密的方式。server端发送给">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Https安全机制的实现">
 <meta property="og:url" content="https://domainz/github.io/2019/09/02/Https%E5%AE%89%E5%85%A8%E6%9C%BA%E5%88%B6%E7%9A%84%E5%AE%9E%E7%8E%B0/index.html">
@@ -139,7 +139,7 @@
       win.activateLightMode = function () {
         document.documentElement.setAttribute('data-theme', 'light')
         if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
         }
       }
       const t = saveToLocal.get('theme')

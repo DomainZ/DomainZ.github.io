@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>iOS之CoreText | Jim zhang's Blog</title><meta name="author" content="Jim zhang"><meta name="copyright" content="Jim zhang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="有时候用网页展示一大片图文效果不怎么好，这时候就有必要用CoreText框架实现页面渲染了； CoreText重要的几个元素 CTFramesetterRef CTFrameRef CTLineRef CTRunRef  CTFrame 作为一个整体的画布(Canvas)，其中由行(CTLine)组成，而每行可以分为一个或多个小方块（CTRun）。   一般流程 使用core text就是先有一个">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>iOS之CoreText | Jim zhang's Blog</title><meta name="author" content="Jim zhang"><meta name="copyright" content="Jim zhang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="有时候用网页展示一大片图文效果不怎么好，这时候就有必要用CoreText框架实现页面渲染了； CoreText重要的几个元素 CTFramesetterRef CTFrameRef CTLineRef CTRunRef  CTFrame 作为一个整体的画布(Canvas)，其中由行(CTLine)组成，而每行可以分为一个或多个小方块（CTRun）。   一般流程 使用core text就是先有一个">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS之CoreText">
 <meta property="og:url" content="https://domainz/github.io/2018/03/06/iOS%E4%B9%8BCoreText/index.html">
@@ -139,7 +139,7 @@
       win.activateLightMode = function () {
         document.documentElement.setAttribute('data-theme', 'light')
         if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
         }
       }
       const t = saveToLocal.get('theme')
