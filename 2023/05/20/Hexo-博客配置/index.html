@@ -196,7 +196,7 @@
 <p>然后在命令行中执行以下命令以部署博客：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo deploy</span><br></pre></td></tr></table></figure>
 
-<p>前提是已经把本机密钥配置上去了<br>cat ~&#x2F;.ssh&#x2F;id_rsa.pub<br>ssh-keygen -t rsa -C “<a href="mailto:&#121;&#x6f;&#117;&#x72;&#x65;&#109;&#x61;&#x69;&#108;&#64;&#x65;&#x78;&#x61;&#x6d;&#112;&#x6c;&#x65;&#x2e;&#99;&#111;&#x6d;">&#121;&#x6f;&#117;&#x72;&#x65;&#109;&#x61;&#x69;&#108;&#64;&#x65;&#x78;&#x61;&#x6d;&#112;&#x6c;&#x65;&#x2e;&#99;&#111;&#x6d;</a>“<br>执行 <code>cat ~/.ssh/id_rsa.pub</code>，复制输出的字符串。然后登录到托管平台，找到 SSH 密钥的设置页面（如 GitHub 的 <a href="https://github.com/settings/keys">SSH and GPG keys</a>），并将刚刚复制的字符串粘贴到这里。</p>
+<p>前提是已经把本机密钥配置上去了<br>cat ~&#x2F;.ssh&#x2F;id_rsa.pub<br>ssh-keygen -t rsa -C “<a href="mailto:&#x79;&#111;&#117;&#x72;&#101;&#x6d;&#x61;&#105;&#108;&#64;&#101;&#x78;&#97;&#x6d;&#x70;&#108;&#x65;&#x2e;&#x63;&#111;&#x6d;">&#x79;&#111;&#117;&#x72;&#101;&#x6d;&#x61;&#105;&#108;&#64;&#101;&#x78;&#97;&#x6d;&#x70;&#108;&#x65;&#x2e;&#x63;&#111;&#x6d;</a>“<br>执行 <code>cat ~/.ssh/id_rsa.pub</code>，复制输出的字符串。然后登录到托管平台，找到 SSH 密钥的设置页面（如 GitHub 的 <a href="https://github.com/settings/keys">SSH and GPG keys</a>），并将刚刚复制的字符串粘贴到这里。</p>
 <p>以上就是配置 Hexo 博客的基本步骤。</p>
 <h2 id="9-编辑的源文件上传到git"><a href="#9-编辑的源文件上传到git" class="headerlink" title="9. 编辑的源文件上传到git"></a>9. 编辑的源文件上传到git</h2><p>需要忽略掉public文件夹，这个是动态生成的，我们主要保存config、source以及theme。仓库的根目录下创建一个名为<code>.gitignore</code>的文件，添加</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">touch</span> .gitignore</span><br></pre></td></tr></table></figure>
