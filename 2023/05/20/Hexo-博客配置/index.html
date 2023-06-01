@@ -158,15 +158,15 @@
 <h2 id="1-安装-Node-js-和-Git"><a href="#1-安装-Node-js-和-Git" class="headerlink" title="1. 安装 Node.js 和 Git"></a>1. 安装 Node.js 和 Git</h2><p>Hexo 是基于 Node.js 构建的，因此首先需要安装 Node.js。请访问 <a href="https://nodejs.org/">Node.js 官网</a> 下载并安装适合您操作系统的 Node.js 版本。</p>
 <p>同时，Hexo 使用 Git 进行版本控制，所以请确保您的电脑上已经安装了 Git。如果没有，请访问 <a href="https://git-scm.com/">Git 官网</a> 下载并安装。</p>
 <h2 id="2-安装-Hexo"><a href="#2-安装-Hexo" class="headerlink" title="2. 安装 Hexo"></a>2. 安装 Hexo</h2><p>打开命令行工具，执行以下命令以全局安装 Hexo：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm install -g hexo-cli<br></code></pre></td></tr></table></figure>
 
 <h2 id="3-初始化-Hexo-博客"><a href="#3-初始化-Hexo-博客" class="headerlink" title="3. 初始化 Hexo 博客"></a>3. 初始化 Hexo 博客</h2><p>创建一个新的文件夹，用于存放您的博客项目。然后在命令行中进入该文件夹，并执行以下命令以初始化 Hexo 博客：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">hexo init<br></code></pre></td></tr></table></figure>
 
 
 
 <p>这将会在当前文件夹中生成 Hexo 的基本文件结构。接下来，执行以下命令以安装项目依赖，如果你换了电脑check out hexo的文件后直接在文件夹更新依赖：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm install<br></code></pre></td></tr></table></figure>
 
 <h2 id="4-配置博客"><a href="#4-配置博客" class="headerlink" title="4. 配置博客"></a>4. 配置博客</h2><p>配置文件位于项目根目录下的 <code>_config.yml</code> 文件。您可以根据需要修改该文件以配置您的博客。以下是一些常见的配置选项：</p>
 <ul>
@@ -179,31 +179,31 @@
 </ul>
 <h2 id="5-写博客文章"><a href="#5-写博客文章" class="headerlink" title="5. 写博客文章"></a>5. 写博客文章</h2><p>在 <code>source/_posts</code> 文件夹下创建一个新的 Markdown 文件，例如 <code>hello-world.md</code>。在该文件中，您可以开始编写您的博客文章。文章的元数据（例如标题、日期、标签等）可以放在文件的 Front-matter 部分。</p>
 <p>例如：</p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">title: Hello World</span><br><span class="line">date: 2023-05-20</span><br><span class="line">tags:</span><br><span class="line"><span class="bullet">-</span> 示例</span><br><span class="line"><span class="bullet">-</span> 教程</span><br></pre></td></tr></table></figure>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs markdown">title: Hello World<br>date: 2023-05-20<br>tags:<br><span class="hljs-bullet">-</span> 示例<br><span class="hljs-bullet">-</span> 教程<br></code></pre></td></tr></table></figure>
 
 <p>这是我的第一篇 Hexo 博客文章。</p>
 <h2 id="6-预览博客"><a href="#6-预览博客" class="headerlink" title="6. 预览博客"></a>6. 预览博客</h2><p>为了预览您的博客，执行以下命令以启动本地服务器：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo server</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">hexo server<br></code></pre></td></tr></table></figure>
 
 <p>然后在浏览器中访问 <code>http://localhost:4000</code> 即可查看您的博客。</p>
 <h2 id="7-生成静态文件"><a href="#7-生成静态文件" class="headerlink" title="7. 生成静态文件"></a>7. 生成静态文件</h2><p>当您想要部署您的博客时，需要先生成静态文件。执行以下命令以生成静态文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo generate</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">hexo generate<br></code></pre></td></tr></table></figure>
 
 <p>这将会在 <code>public</code> 文件夹下生成静态文件。</p>
 <h2 id="8-部署博客"><a href="#8-部署博客" class="headerlink" title="8. 部署博客"></a>8. 部署博客</h2><p>您可以将生成的静态文件部署到各种托管平台，例如 GitHub Pages、GitLab Pages、Netlify 等。在 <code>_config.yml</code> 文件中，您可以配置部署相关的选项。例如，以下配置表示使用 GitHub Pages 进行部署：<br>我自己是注册了一个新的github账号（domainz），设置了github pages</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">git@github.com:yourusername/yourusername.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">main</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">deploy:</span><br>  <span class="hljs-attr">type:</span> <span class="hljs-string">git</span><br>  <span class="hljs-attr">repo:</span> <span class="hljs-string">git@github.com:yourusername/yourusername.github.io.git</span><br>  <span class="hljs-attr">branch:</span> <span class="hljs-string">main</span><br></code></pre></td></tr></table></figure>
 
 <p>然后在命令行中执行以下命令以部署博客：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo deploy</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Bash">hexo deploy<br></code></pre></td></tr></table></figure>
 
-<p>前提是已经把本机密钥配置上去了<br>cat ~&#x2F;.ssh&#x2F;id_rsa.pub<br>ssh-keygen -t rsa -C “<a href="mailto:&#121;&#x6f;&#117;&#x72;&#x65;&#109;&#97;&#x69;&#x6c;&#x40;&#x65;&#x78;&#97;&#x6d;&#x70;&#108;&#101;&#46;&#x63;&#111;&#109;">&#121;&#x6f;&#117;&#x72;&#x65;&#109;&#97;&#x69;&#x6c;&#x40;&#x65;&#x78;&#97;&#x6d;&#x70;&#108;&#101;&#46;&#x63;&#111;&#109;</a>“<br>执行 <code>cat ~/.ssh/id_rsa.pub</code>，复制输出的字符串。然后登录到托管平台，找到 SSH 密钥的设置页面（如 GitHub 的 <a href="https://github.com/settings/keys">SSH and GPG keys</a>），并将刚刚复制的字符串粘贴到这里。</p>
+<p>前提是已经把本机密钥配置上去了<br>cat ~&#x2F;.ssh&#x2F;id_rsa.pub<br>ssh-keygen -t rsa -C “<a href="mailto:&#x79;&#x6f;&#x75;&#x72;&#x65;&#109;&#x61;&#x69;&#x6c;&#x40;&#x65;&#x78;&#97;&#x6d;&#x70;&#x6c;&#101;&#46;&#99;&#x6f;&#x6d;">&#x79;&#x6f;&#x75;&#x72;&#x65;&#109;&#x61;&#x69;&#x6c;&#x40;&#x65;&#x78;&#97;&#x6d;&#x70;&#x6c;&#101;&#46;&#99;&#x6f;&#x6d;</a>“<br>执行 <code>cat ~/.ssh/id_rsa.pub</code>，复制输出的字符串。然后登录到托管平台，找到 SSH 密钥的设置页面（如 GitHub 的 <a href="https://github.com/settings/keys">SSH and GPG keys</a>），并将刚刚复制的字符串粘贴到这里。</p>
 <p>以上就是配置 Hexo 博客的基本步骤。</p>
 <h2 id="9-编辑的源文件上传到git"><a href="#9-编辑的源文件上传到git" class="headerlink" title="9. 编辑的源文件上传到git"></a>9. 编辑的源文件上传到git</h2><p>需要忽略掉public文件夹，这个是动态生成的，我们主要保存config、source以及theme。仓库的根目录下创建一个名为<code>.gitignore</code>的文件，添加</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">touch</span> .gitignore</span><br></pre></td></tr></table></figure>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">node_modules/</span></span><br><span class="line"><span class="string">db.json</span></span><br><span class="line"><span class="string">package-lock.json</span></span><br><span class="line"><span class="string">package.json</span></span><br><span class="line"><span class="string">public/</span></span><br><span class="line"><span class="string">scaffolds/</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Bash"><span class="hljs-built_in">touch</span> .gitignore<br></code></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-string">node_modules/</span><br><span class="hljs-string">db.json</span><br><span class="hljs-string">package-lock.json</span><br><span class="hljs-string">package.json</span><br><span class="hljs-string">public/</span><br><span class="hljs-string">scaffolds/</span><br></code></pre></td></tr></table></figure>
 
 <h2 id="10-其他记录"><a href="#10-其他记录" class="headerlink" title="10. 其他记录"></a>10. 其他记录</h2><h3 id="主题"><a href="#主题" class="headerlink" title="主题"></a>主题</h3><p>很久没有重新写博客，next跑起来显示异常，直接找个新的主题Butterfly<br><a href="https://dora-cmon.github.io/posts/fad26ff2/">Butterfly配置</a></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> -b master https://github.com/jerryc127/hexo-theme-butterfly.git themes/butterfly</span><br><span class="line">sudo npm install hexo-renderer-pug hexo-renderer-stylus --save</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Bash">git <span class="hljs-built_in">clone</span> -b master https://github.com/jerryc127/hexo-theme-butterfly.git themes/butterfly<br>sudo npm install hexo-renderer-pug hexo-renderer-stylus --save<br></code></pre></td></tr></table></figure>
 
 <h3 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h3><ol>
 <li>hexo new post “blog title”</li>
