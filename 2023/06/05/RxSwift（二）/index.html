@@ -1,0 +1,171 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>RxSwift（二） | Jim zhang's Blog</title><meta name="author" content="Jim zhang"><meta name="copyright" content="Jim zhang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="RxSwift（一）上篇文章主要讲了，Rx 的 Observable、Observer以及操作符的实现方式。这篇文章主要看看Rx是如何实现一些iOS常用元素的监听的。 通知的监听12345678910111213141516171819202122232425&#x2F;&#x2F; 外部调用NotificationCenter.default.rx.notification(name).subscribe(onNe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RxSwift（二）">
+<meta property="og:url" content="https://domainz/github.io/2023/06/05/RxSwift%EF%BC%88%E4%BA%8C%EF%BC%89/index.html">
+<meta property="og:site_name" content="Jim zhang&#39;s Blog">
+<meta property="og:description" content="RxSwift（一）上篇文章主要讲了，Rx 的 Observable、Observer以及操作符的实现方式。这篇文章主要看看Rx是如何实现一些iOS常用元素的监听的。 通知的监听12345678910111213141516171819202122232425&#x2F;&#x2F; 外部调用NotificationCenter.default.rx.notification(name).subscribe(onNe">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://domainz/github.io/img/IMG_8022.JPG">
+<meta property="article:published_time" content="2023-06-05T05:15:17.000Z">
+<meta property="article:modified_time" content="2023-06-05T06:33:24.805Z">
+<meta property="article:author" content="Jim zhang">
+<meta property="article:tag" content="RXSwift">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://domainz/github.io/img/IMG_8022.JPG"><link rel="shortcut icon" href="/img/IMG_8022.JPG"><link rel="canonical" href="https://domainz/github.io/2023/06/05/RxSwift%EF%BC%88%E4%BA%8C%EF%BC%89/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'RxSwift（二）',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-06-05 14:33:24'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.0.0-rc1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/IMG_8022.JPG" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Jim zhang's Blog"><span class="site-name">Jim zhang's Blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">RxSwift（二）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-06-05T05:15:17.000Z" title="发表于 2023-06-05 13:15:17">2023-06-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-06-05T06:33:24.805Z" title="更新于 2023-06-05 14:33:24">2023-06-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/iOS/">iOS</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><a href="https://domainz.github.io/2023/05/25/RXSwift/">RxSwift（一）</a>上篇文章主要讲了，Rx 的 Observable、Observer以及操作符的实现方式。这篇文章主要看看Rx是如何实现一些iOS常用元素的监听的。</p>
+<h3 id="通知的监听"><a href="#通知的监听" class="headerlink" title="通知的监听"></a>通知的监听</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs Swift"><span class="hljs-comment">// 外部调用</span><br><span class="hljs-type">NotificationCenter</span>.default.rx.notification(name).subscribe(onNext: block)<br><br><span class="hljs-comment">// 关键源码 1</span><br><span class="hljs-keyword">extension</span> <span class="hljs-title class_">NSObject</span>: <span class="hljs-title class_">ReactiveCompatible</span> &#123; &#125;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">var</span> rx: <span class="hljs-type">Reactive</span>&lt;<span class="hljs-keyword">Self</span>&gt; &#123;<br>    <span class="hljs-keyword">get</span> &#123; <span class="hljs-type">Reactive</span>(<span class="hljs-keyword">self</span>) &#125;<br>    <span class="hljs-comment">// this enables using Reactive to &quot;mutate&quot; base object</span><br>    <span class="hljs-comment">// swiftlint:disable:next unused_setter_value</span><br>    <span class="hljs-keyword">set</span> &#123; &#125;<br>&#125;<br><br><span class="hljs-comment">// 关键源码 2</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">func</span> <span class="hljs-title function_">notification</span>(<span class="hljs-keyword">_</span> <span class="hljs-params">name</span>: <span class="hljs-type">Notification</span>.<span class="hljs-type">Name</span>?, <span class="hljs-params">object</span>: <span class="hljs-type">AnyObject</span>? <span class="hljs-operator">=</span> <span class="hljs-literal">nil</span>) -&gt; <span class="hljs-type">Observable</span>&lt;<span class="hljs-type">Notification</span>&gt; &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">Observable</span>.create &#123; [<span class="hljs-keyword">weak</span> object] observer <span class="hljs-keyword">in</span><br>        <span class="hljs-keyword">let</span> nsObserver <span class="hljs-operator">=</span> <span class="hljs-keyword">self</span>.base.addObserver(forName: name, object: object, queue: <span class="hljs-literal">nil</span>) &#123; notification <span class="hljs-keyword">in</span><br>            observer.on(.next(notification))<br>        &#125;<br>        <br>        <span class="hljs-keyword">return</span> <span class="hljs-type">Disposables</span>.create &#123;<br>            <span class="hljs-keyword">self</span>.base.removeObserver(nsObserver)<br>        &#125;<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<ol>
+<li>通过<code>NotificationCenter.default.rx</code>得到一个<code>base</code>是<code>NotificationCenter</code>的<code>Reactive</code>对象。</li>
+<li>通过<code>notification</code>方法，创建了一个<code>Observable</code>，<code>event generator</code> 中通过<code>NotificationCenter</code>的<code>addObserver</code>方法监听某个通知，然后把监听到的事件发送给<code>Observer</code>，<code>Disposable</code>中已经处理了移除通知的逻辑。</li>
+</ol>
+<h3 id="UITextField的监听"><a href="#UITextField的监听" class="headerlink" title="UITextField的监听"></a>UITextField的监听</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><code class="hljs Swift"><span class="hljs-comment">// 外部调用：作为Observable</span><br>phoneNumberTF.rx.text.orEmpty.distinctUntilChanged().subscribe(onNext: &#123; [<span class="hljs-keyword">weak</span> <span class="hljs-keyword">self</span>] text <span class="hljs-keyword">in</span><br>    <span class="hljs-keyword">self</span><span class="hljs-operator">?</span>.textDidChange(text)<br>&#125;).disposed(by: disposeBag)<br><br><span class="hljs-comment">// 外部调用：作为observer</span><br><span class="hljs-keyword">let</span> newText <span class="hljs-operator">=</span> <span class="hljs-type">BehaviorSubject</span>&lt;<span class="hljs-type">String</span>&gt;(value: <span class="hljs-string">&quot;&quot;</span>)<br>updateButton.rx.tap<br>    .map &#123; <span class="hljs-string">&quot;Updated at <span class="hljs-subst">\(Date())</span>&quot;</span> &#125;<br>    .bind(to: newText)<br>    .disposed(by: disposeBag)<br>newText<br>    .bind(to: textField.rx.text)<br>    .disposed(by: disposeBag)<br><br><span class="hljs-comment">// 关键源码 1</span><br><span class="hljs-comment">/// Reactive wrapper for `text` property.</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">var</span> value: <span class="hljs-type">ControlProperty</span>&lt;<span class="hljs-type">String</span>?&gt; &#123;<br>    <span class="hljs-keyword">return</span> base.rx.controlPropertyWithDefaultEvents(<br>        getter: &#123; textField <span class="hljs-keyword">in</span><br>            textField.text<br>        &#125;,<br>        setter: &#123; textField, value <span class="hljs-keyword">in</span><br>            <span class="hljs-comment">// This check is important because setting text value always clears control state</span><br>            <span class="hljs-comment">// including marked text selection which is imporant for proper input </span><br>            <span class="hljs-comment">// when IME input method is used.</span><br>            <span class="hljs-keyword">if</span> textField.text <span class="hljs-operator">!=</span> value &#123;<br>                textField.text <span class="hljs-operator">=</span> value<br>            &#125;<br>        &#125;<br>    )<br>&#125;<br><br><span class="hljs-comment">// 关键源码 2</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">func</span> <span class="hljs-title function_">controlProperty</span>&lt;<span class="hljs-type">T</span>&gt;(<br>        <span class="hljs-params">editingEvents</span>: <span class="hljs-type">UIControl</span>.<span class="hljs-type">Event</span>,<br>        <span class="hljs-params">getter</span>: <span class="hljs-keyword">@escaping</span> (<span class="hljs-type">Base</span>) -&gt; <span class="hljs-type">T</span>,<br>        <span class="hljs-params">setter</span>: <span class="hljs-keyword">@escaping</span> (<span class="hljs-type">Base</span>, <span class="hljs-type">T</span>) -&gt; <span class="hljs-type">Void</span><br>    ) -&gt; <span class="hljs-type">ControlProperty</span>&lt;<span class="hljs-type">T</span>&gt; &#123;<br>    <span class="hljs-keyword">let</span> source: <span class="hljs-type">Observable</span>&lt;<span class="hljs-type">T</span>&gt; <span class="hljs-operator">=</span> <span class="hljs-type">Observable</span>.create &#123; [<span class="hljs-keyword">weak</span> weakControl <span class="hljs-operator">=</span> base] observer <span class="hljs-keyword">in</span><br>            <span class="hljs-keyword">guard</span> <span class="hljs-keyword">let</span> control <span class="hljs-operator">=</span> weakControl <span class="hljs-keyword">else</span> &#123;<br>                observer.on(.completed)<br>                <span class="hljs-keyword">return</span> <span class="hljs-type">Disposables</span>.create()<br>            &#125;<br><br>            observer.on(.next(getter(control)))<br><br>            <span class="hljs-keyword">let</span> controlTarget <span class="hljs-operator">=</span> <span class="hljs-type">ControlTarget</span>(control: control, controlEvents: editingEvents) &#123; <span class="hljs-keyword">_</span> <span class="hljs-keyword">in</span><br>                <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> control <span class="hljs-operator">=</span> weakControl &#123;<br>                    observer.on(.next(getter(control)))<br>                &#125;<br>            &#125;<br>            <br>            <span class="hljs-keyword">return</span> <span class="hljs-type">Disposables</span>.create(with: controlTarget.dispose)<br>        &#125;<br>        .take(until: deallocated)<br><br>    <span class="hljs-keyword">let</span> bindingObserver <span class="hljs-operator">=</span> <span class="hljs-type">Binder</span>(base, binding: setter)<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-type">ControlProperty</span>&lt;<span class="hljs-type">T</span>&gt;(values: source, valueSink: bindingObserver)<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<ol>
+<li><code>phoneNumberTF.rx.text</code>返回的是<code>ControlProperty</code>对象。</li>
+<li><code>ControlProperty</code>对象，持有<code>tf</code>的<code>getter</code>、<code>setter</code>方法以及事件变化类型的数组<code>[.allEditingEvents, .valueChanged]</code>，通过这些输入最终转化成了<code>source</code>和<code>bindingObserver</code>。</li>
+<li><code>ControlProperty</code>实现了<code>ObservableType</code>和<code>ObserverType</code>协议，意味着可以作为输入也可以作为输出。</li>
+</ol>
+<p>总结：本质上就是通过操作<code>getter方法</code>和<code>Events</code>作为<code>Observable</code>，操作<code>setter方法</code>作为<code>observer</code>。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://domainz/github.io">Jim zhang</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://domainz/github.io/2023/06/05/RxSwift%EF%BC%88%E4%BA%8C%EF%BC%89/">https://domainz/github.io/2023/06/05/RxSwift%EF%BC%88%E4%BA%8C%EF%BC%89/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://domainz/github.io" target="_blank">Jim zhang's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/RXSwift/">RXSwift</a></div><div class="post_share"></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/06/01/Swift%E4%B8%AD%E7%9A%84%E6%B3%9B%E5%9E%8B/" title="Swift中的泛型"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Swift中的泛型</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/05/25/RXSwift/" title="RXSwift(一)"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-25</div><div class="title">RXSwift(一)</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/IMG_8022.JPG" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Jim zhang</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E7%9F%A5%E7%9A%84%E7%9B%91%E5%90%AC"><span class="toc-number">1.</span> <span class="toc-text">通知的监听</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UITextField%E7%9A%84%E7%9B%91%E5%90%AC"><span class="toc-number">2.</span> <span class="toc-text">UITextField的监听</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/06/05/RxSwift%EF%BC%88%E4%BA%8C%EF%BC%89/" title="RxSwift（二）">RxSwift（二）</a><time datetime="2023-06-05T05:15:17.000Z" title="发表于 2023-06-05 13:15:17">2023-06-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/06/01/Swift%E4%B8%AD%E7%9A%84%E6%B3%9B%E5%9E%8B/" title="Swift中的泛型">Swift中的泛型</a><time datetime="2023-06-01T06:25:23.000Z" title="发表于 2023-06-01 14:25:23">2023-06-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/05/25/RXSwift/" title="RXSwift(一)">RXSwift(一)</a><time datetime="2023-05-25T13:43:55.000Z" title="发表于 2023-05-25 21:43:55">2023-05-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/05/24/%E6%B0%94%E6%B3%A1%E7%AE%AD%E5%A4%B4%E7%9A%84%E5%9C%86%E8%A7%92%E5%AE%9E%E7%8E%B0/" title="FTPopOverMenu气泡优化">FTPopOverMenu气泡优化</a><time datetime="2023-05-24T13:30:20.000Z" title="发表于 2023-05-24 21:30:20">2023-05-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/05/23/%E7%BA%A6%E6%9D%9Ftips/" title="约束Tips">约束Tips</a><time datetime="2023-05-23T01:58:26.000Z" title="发表于 2023-05-23 09:58:26">2023-05-23</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By Jim zhang</div><div class="framework-info"><span>框架 </span><a href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>
