@@ -7,7 +7,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://domainz/github.io/img/IMG_8022.JPG">
 <meta property="article:published_time" content="2023-11-22T06:33:16.000Z">
-<meta property="article:modified_time" content="2023-11-24T01:56:51.882Z">
+<meta property="article:modified_time" content="2023-11-24T02:06:22.574Z">
 <meta property="article:author" content="Jim zhang">
 <meta property="article:tag" content="组件化">
 <meta name="twitter:card" content="summary">
@@ -58,7 +58,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2023-11-24 09:56:51'
+  postUpdate: '2023-11-24 10:06:22'
 }</script><noscript><style type="text/css">
   #nav {
     opacity: 1
@@ -153,7 +153,7 @@
       }
     }
     detectApple()
-    })(window)</script><link rel="stylesheet" href="/static/css/custom.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/xcode.min.css"> <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/objectivec.min.js"></script> <script>hljs.highlightAll();</script><meta name="generator" content="Hexo 7.0.0-rc1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/IMG_8022.JPG" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">36</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Jim zhang's Blog"><span class="site-name">Jim zhang's Blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">WorkSpace下多Project依赖管理</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-11-22T06:33:16.000Z" title="发表于 2023-11-22 14:33:16">2023-11-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-11-24T01:56:51.882Z" title="更新于 2023-11-24 09:56:51">2023-11-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/iOS/">iOS</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="场景：使用pod做依赖管理的老项目，需要把一些功能模块抽出去做framework，要求抽出去的代码最好不要再手动处理资源引用类似的问题。"><a href="#场景：使用pod做依赖管理的老项目，需要把一些功能模块抽出去做framework，要求抽出去的代码最好不要再手动处理资源引用类似的问题。" class="headerlink" title="场景：使用pod做依赖管理的老项目，需要把一些功能模块抽出去做framework，要求抽出去的代码最好不要再手动处理资源引用类似的问题。"></a>场景：使用pod做依赖管理的老项目，需要把一些功能模块抽出去做framework，要求抽出去的代码最好不要再手动处理资源引用类似的问题。</h2><h3 id="一、不同类型库最终生成的包"><a href="#一、不同类型库最终生成的包" class="headerlink" title="一、不同类型库最终生成的包"></a>一、不同类型库最终生成的包</h3><p> .dylib动态库被弃用，.a的静态库可以创建，但是建议用framework，framework有命名空间和更好的封装性。这里讨论的都是framework处理的情况，创建framework默认是动态的，可以在mach-o type选成静态库。</p>
+    })(window)</script><link rel="stylesheet" href="/static/css/custom.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/xcode.min.css"> <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/objectivec.min.js"></script> <script>hljs.highlightAll();</script><meta name="generator" content="Hexo 7.0.0-rc1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/IMG_8022.JPG" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">36</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Jim zhang's Blog"><span class="site-name">Jim zhang's Blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">WorkSpace下多Project依赖管理</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-11-22T06:33:16.000Z" title="发表于 2023-11-22 14:33:16">2023-11-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-11-24T02:06:22.574Z" title="更新于 2023-11-24 10:06:22">2023-11-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/iOS/">iOS</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="场景：使用pod做依赖管理的老项目，需要把一些功能模块抽出去做framework，要求抽出去的代码最好不要再手动处理资源引用类似的问题。"><a href="#场景：使用pod做依赖管理的老项目，需要把一些功能模块抽出去做framework，要求抽出去的代码最好不要再手动处理资源引用类似的问题。" class="headerlink" title="场景：使用pod做依赖管理的老项目，需要把一些功能模块抽出去做framework，要求抽出去的代码最好不要再手动处理资源引用类似的问题。"></a>场景：使用pod做依赖管理的老项目，需要把一些功能模块抽出去做framework，要求抽出去的代码最好不要再手动处理资源引用类似的问题。</h2><h3 id="一、不同类型库最终生成的包"><a href="#一、不同类型库最终生成的包" class="headerlink" title="一、不同类型库最终生成的包"></a>一、不同类型库最终生成的包</h3><p> .dylib动态库被弃用，.a的静态库可以创建，但是建议用framework，framework有命名空间和更好的封装性。这里讨论的都是framework处理的情况，创建framework默认是动态的，可以在mach-o type选成静态库。</p>
 <img src="create_lib_class.png"  style="width: 50%;" />
 
 <ul>
@@ -204,14 +204,15 @@
 <li>如果一个framework依赖了静态库，最好保持统一都是静态；</li>
 <li>动态framework抽离起来，代码最无损，支持更便捷；</li>
 <li>静态就存在资源迁移和重名问题；</li>
+<li><code>imagename</code>只会找主bundle，<code>R</code>找r文件所在bundle；</li>
 </ul>
 <p>最佳实践：</p>
 <ul>
-<li>自制动态framework使用<code>R</code>索引，完美支持；</li>
-<li>如果自制的framework依赖静态库，mach-o type设置成静态，可以用<code>R</code>索引，需要脚本处理资源合并；</li>
+<li>自制动态framework使用<code>R</code>索引，完美支持，但是不能用<code>imagename</code>；</li>
+<li>如果自制的framework依赖静态库，mach-o type设置成静态，可以用<code>R</code>索引或者<code>imagename</code>，需要脚本处理资源合并；</li>
 <li>podfile默认使用useframework！，正常一个库依赖静态的都会有设置成自己是静态的，如果不行可以在post_install钩子设置mach-o type；</li>
-<li>自制私有动态pod库，spec资源引用采用<code>resources</code>，可以支持用<code>R</code>，推荐直接imagenamed，用<code>R</code>每次更新文件需要重新生成文件一下，不是在主工程使用<code>R</code>有点麻烦；</li>
-<li>自制私有静态pod库，spec资源引用采用<code>resource_bundles</code>+<code>key</code>的形式，需要专门写一个资源索引的方法，因为pod自身会输出脚本移动资源，所以不用手动处理。</li>
+<li>自制私有动态pod库，spec资源引用采用<code>resources</code>，支持用<code>R</code>，用<code>R</code>每次更新文件需要重新生成文件一下，不是在主工程使用<code>R</code>有点麻烦，写一个资源索引的方法来的更方便；</li>
+<li>自制私有静态pod库，spec资源引用采用<code>resource_bundles</code>+<code>key</code>的形式，理论上可以用<code>imagename</code>或者<code>R</code>，和上面一条一样不如写一个资源索引的方法来的方便。因为pod工具自身会输出脚本移动资源，所以不用手动处理。</li>
 </ul>
 <p><a href="https://github.com/mac-cain13/R.swift/issues/713">Pod库使用R.swift</a></p>
 <p><a href="https://github.com/mac-cain13/R.swift/issues/583">R用在私有pod库报错infoplist变量的问题</a></p>
